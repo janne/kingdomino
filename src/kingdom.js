@@ -28,6 +28,9 @@ const getSurroundingLands = ({ x, y }, board) =>
     getLand({ y, x: x + 1 }, board)
   ])
 
+const matchBiome = expectedBiome => ({ biome }) =>
+  [expectedBiome, CASTLE_BIOME].includes(biome)
+
 const getBoard = kingdom =>
   kingdom.reduce(
     (board, placement) => {
@@ -47,14 +50,8 @@ const getBoard = kingdom =>
         return null
 
       if (
-        none(
-          ({ biome }) => [leftLand.biome, CASTLE_BIOME].includes(biome),
-          leftSurroundingLands
-        ) &&
-        none(
-          ({ biome }) => [rightLand.biome, CASTLE_BIOME].includes(biome),
-          rightSurroundingLands
-        )
+        none(matchBiome(leftLand.biome), leftSurroundingLands) &&
+        none(matchBiome(rightLand.biome), rightSurroundingLands)
       )
         return null
 
