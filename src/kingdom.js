@@ -1,4 +1,4 @@
-import { equals, filter, find, pick, none } from 'ramda'
+import { equals, filter, find, pick, none, is } from 'ramda'
 import stack from './stack'
 
 const CASTLE_BIOME = 'Castle'
@@ -61,7 +61,7 @@ const getBoard = kingdom =>
   )
 
 const isValid = kingdom => {
-  if (!Array.isArray(kingdom)) return false
+  if (!is(Array, kingdom)) return false
   return getBoard(kingdom) !== null
 }
 
