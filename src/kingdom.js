@@ -1,5 +1,7 @@
-import { equals, filter, find, pick, not } from 'ramda'
+import { equals, filter, find, pick, none } from 'ramda'
 import stack from './stack'
+
+const CASTLE_BIOME = 'Castle'
 
 const getLeftPos = ({ x, y }) => ({ x, y })
 const getRightPos = ({ x, y, dir }) => {
@@ -42,6 +44,18 @@ const getBoard = kingdom =>
       const rightSurroundingLands = getSurroundingLands(rightPos, board)
 
       if (equals(leftSurroundingLands, []) && equals(rightSurroundingLands, []))
+        return null
+
+      if (
+        none(
+          ({ biome }) => [leftLand.biome, CASTLE_BIOME].includes(biome),
+          leftSurroundingLands
+        ) &&
+        none(
+          ({ biome }) => [rightLand.biome, CASTLE_BIOME].includes(biome),
+          rightSurroundingLands
+        )
+      )
         return null
 
       return [...board, leftLand, rightLand]

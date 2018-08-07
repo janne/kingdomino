@@ -1,10 +1,13 @@
 import { isValid, getBoard } from './kingdom'
 import stack from './stack'
 
-const domino = stack[0]
+const [domino, domino2] = stack
 const overlappingCastle = { dir: 0, x: 0, y: 0, domino }
 const gapFromCastle = { dir: 0, x: 2, y: 0, domino }
-const validPlacements = [{ dir: 0, x: 1, y: 0, domino }]
+const validPlacements = [
+  { dir: 0, x: 1, y: 0, domino },
+  { dir: 0, x: 3, y: 0, domino: domino2 }
+]
 
 describe('isValid', () => {
   it('is false for undefined', () => {
@@ -25,6 +28,15 @@ describe('isValid', () => {
 
   it('returns false if gap between placement and other cards', () => {
     expect(isValid([gapFromCastle])).toEqual(false)
+  })
+
+  it('returns false unless surrounding has same biome or castle', () => {
+    expect(
+      isValid([
+        { dir: 0, x: 1, y: 0, domino: domino2 },
+        { dir: 0, x: 3, y: 0, domino }
+      ])
+    ).toEqual(false)
   })
 
   it('returns true for correct board', () => {
