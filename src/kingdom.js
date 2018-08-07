@@ -17,7 +17,7 @@ const getRightPos = ({ x, y, dir }) => {
   }
 }
 
-const getLand = (pos, board) =>
+const getLand = board => pos =>
   find(landPos => equals(pos, pick(['x', 'y'], landPos)), board)
 
 const getSurroundings = ({ x, y }) => [
@@ -28,7 +28,7 @@ const getSurroundings = ({ x, y }) => [
 ]
 
 const getSurroundingLands = (aroundPos, board) =>
-  filter(f => !!f, getSurroundings(aroundPos).map(pos => getLand(pos, board)))
+  filter(f => !!f, getSurroundings(aroundPos).map(getLand(board)))
 
 const matchBiome = expectedBiome => ({ biome }) =>
   [expectedBiome, CASTLE_BIOME].includes(biome)
@@ -39,12 +39,13 @@ const getBoard = kingdom =>
       if (board === null) return null
 
       const leftPos = getLeftPos(placement)
-      if (getLand(leftPos, board)) return null
+      const getLandOnPos = getLand(board)
+      if (getLandOnPos(leftPos)) return null
       const leftLand = { ...leftPos, ...placement.domino[0] }
       const leftSurroundingLands = getSurroundingLands(leftPos, board)
 
       const rightPos = getRightPos(placement)
-      if (getLand(rightPos, board)) return null
+      if (getLandOnPos(rightPos)) return null
       const rightLand = { ...rightPos, ...placement.domino[1] }
       const rightSurroundingLands = getSurroundingLands(rightPos, board)
 
