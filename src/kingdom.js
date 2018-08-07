@@ -20,13 +20,15 @@ const getRightPos = ({ x, y, dir }) => {
 const getLand = (pos, board) =>
   find(landPos => equals(pos, pick(['x', 'y'], landPos)), board)
 
-const getSurroundingLands = ({ x, y }, board) =>
-  filter(f => !!f, [
-    getLand({ x, y: y - 1 }, board),
-    getLand({ x, y: y + 1 }, board),
-    getLand({ y, x: x - 1 }, board),
-    getLand({ y, x: x + 1 }, board)
-  ])
+const getSurroundings = ({ x, y }) => [
+  { x, y: y - 1 },
+  { x, y: y + 1 },
+  { x: x - 1, y },
+  { x: x + 1, y }
+]
+
+const getSurroundingLands = (aroundPos, board) =>
+  filter(f => !!f, getSurroundings(aroundPos).map(pos => getLand(pos, board)))
 
 const matchBiome = expectedBiome => ({ biome }) =>
   [expectedBiome, CASTLE_BIOME].includes(biome)
