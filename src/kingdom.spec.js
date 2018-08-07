@@ -3,6 +3,7 @@ import stack from './stack'
 
 const domino = stack[0]
 const overlappingCastle = { dir: 0, x: 0, y: 0, domino }
+const gapFromCastle = { dir: 0, x: 2, y: 0, domino }
 const validPlacements = [{ dir: 0, x: 1, y: 0, domino }]
 
 describe('isValid', () => {
@@ -20,6 +21,10 @@ describe('isValid', () => {
 
   it('returns false if right part of domino is placed on the castle', () => {
     expect(isValid([{ ...overlappingCastle, x: -1 }])).toEqual(false)
+  })
+
+  it('returns false if gap between placement and other cards', () => {
+    expect(isValid([gapFromCastle])).toEqual(false)
   })
 
   it('returns true for correct board', () => {

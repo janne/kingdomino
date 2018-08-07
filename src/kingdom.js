@@ -1,4 +1,4 @@
-import { equals, find, pick } from 'ramda'
+import { equals, filter, find, pick, not } from 'ramda'
 import stack from './stack'
 
 const getLeftPos = ({ x, y }) => ({ x, y })
@@ -18,6 +18,14 @@ const getRightPos = ({ x, y, dir }) => {
 const getLand = (pos, board) =>
   find(landPos => equals(pos, pick(['x', 'y'], landPos)), board)
 
+const getSurroundingLands = ({ x, y }, board) =>
+  filter(f => !!f, [
+    getLand({ x, y: y - 1 }, board),
+    getLand({ x, y: y + 1 }, board),
+    getLand({ y, x: x - 1 }, board),
+    getLand({ y, x: x + 1 }, board)
+  ])
+
 const getBoard = kingdom =>
   kingdom.reduce(
     (board, placement) => {
@@ -26,10 +34,15 @@ const getBoard = kingdom =>
       const leftPos = getLeftPos(placement)
       if (getLand(leftPos, board)) return null
       const leftLand = { ...leftPos, ...placement.domino[0] }
+      const leftSurroundingLands = getSurroundingLands(leftPos, board)
 
       const rightPos = getRightPos(placement)
       if (getLand(rightPos, board)) return null
       const rightLand = { ...rightPos, ...placement.domino[1] }
+      const rightSurroundingLands = getSurroundingLands(rightPos, board)
+
+      if (equals(leftSurroundingLands, []) && equals(rightSurroundingLands, []))
+        return null
 
       return [...board, leftLand, rightLand]
     },
