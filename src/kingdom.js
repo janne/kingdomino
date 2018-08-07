@@ -36,9 +36,9 @@ const getBoard = kingdom =>
     [{ x: 0, y: 0, biome: 'Castle', crowns: 0 }]
   )
 
-const validator = kingdom => {
+const isValid = kingdom => {
   if (!Array.isArray(kingdom)) return false
   return getBoard(kingdom) !== null
 }
 
-export default validator
+export { getBoard, isValid }
