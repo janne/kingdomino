@@ -1,4 +1,4 @@
-import { isValid, getBoard } from './kingdom'
+import { isValid, getBoard, getPoints } from './kingdom'
 import stack from './stack'
 
 const [domino, domino2] = stack
@@ -55,5 +55,15 @@ describe('getBoard', () => {
       { x: 1, y: 0, crowns: 0, biome: 'Field' },
       { x: 2, y: 0, crowns: 0, biome: 'Field' }
     ])
+  })
+})
+
+describe('getPoints', () => {
+  it('returns 0 for empty board', () => {
+    expect(getPoints([])).toEqual(0)
+  })
+
+  it('returns correct points for valid kingdom', () => {
+    expect(getPoints(validPlacements)).toEqual(10)
   })
 })

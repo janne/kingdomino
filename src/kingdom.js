@@ -1,4 +1,14 @@
-import { equals, filter, find, pick, none, is } from 'ramda'
+import {
+  equals,
+  filter,
+  find,
+  pick,
+  none,
+  is,
+  isEmpty,
+  head,
+  difference
+} from 'ramda'
 import stack from './stack'
 
 const CASTLE_BIOME = 'Castle'
@@ -68,4 +78,31 @@ const isValid = kingdom => {
   return getBoard(kingdom) !== null
 }
 
-export { getBoard, isValid }
+const getPoints = kingdom => {
+  let board = getBoard(kingdom)
+
+  while (!isEmpty(board)) {
+    const head = board.pop()
+    const check = [head]
+    const hits = []
+
+    while (!isEmpty(check)) {
+      const land = check.pop()
+      hits.push(land)
+      const matching = filter(
+        matchBiome(head.biome),
+        getSurroundings(land)
+          .map(getLand(board))
+          .filter(f => !!f)
+      )
+      matching.forEach(check.push)
+      matching.forEach(hits.push)
+      board = difference(board, matching)
+    }
+    console.log(`${hits.length} piece(s) of ${hits[0].biome}`)
+  }
+
+  return 0
+}
+
+export { getBoard, getPoints, isValid }
