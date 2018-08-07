@@ -8,10 +8,16 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Welcome to Kingdomino</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          The boardgame{' '}
+          <a href="http://www.blueorangegames.com/index.php/games/king-domino">
+            Kingdomino
+          </a>{' '}
+          by <a href="http://www.blueorangegames.com/">Blue Orange Games</a>,
+          developed by <a href="https://github.com/janne">Jan Andersson</a> in
+          Javascript.
         </p>
       </div>
     )
