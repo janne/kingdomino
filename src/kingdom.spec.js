@@ -1,12 +1,15 @@
 import { isValid, getBoard, getPoints } from './kingdom'
 import stack from './stack'
 
-const [domino, domino2] = stack
+const domino = stack[0]
 const overlappingCastle = { dir: 0, x: 0, y: 0, domino }
 const gapFromCastle = { dir: 0, x: 2, y: 0, domino }
 const validPlacements = [
   { dir: 0, x: 1, y: 0, domino },
-  { dir: 0, x: 3, y: 0, domino: domino2 }
+  { dir: 0, x: 3, y: 0, domino: stack[1] },
+  { dir: 0, x: -2, y: 0, domino: stack[2] },
+  { dir: 0, x: 3, y: 1, domino: stack[8] },
+  { dir: 0, x: -2, y: 1, domino: stack[16] }
 ]
 
 describe('isValid', () => {
@@ -33,7 +36,7 @@ describe('isValid', () => {
   it('returns false unless surrounding has same biome or castle', () => {
     expect(
       isValid([
-        { dir: 0, x: 1, y: 0, domino: domino2 },
+        { dir: 0, x: 1, y: 0, domino: stack[1] },
         { dir: 0, x: 3, y: 0, domino }
       ])
     ).toEqual(false)
@@ -64,6 +67,6 @@ describe('getPoints', () => {
   })
 
   it('returns correct points for valid kingdom', () => {
-    expect(getPoints(validPlacements)).toEqual(10)
+    expect(getPoints(validPlacements)).toEqual(11)
   })
 })

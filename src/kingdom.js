@@ -1,4 +1,5 @@
 import {
+  concat,
   equals,
   filter,
   find,
@@ -7,7 +8,10 @@ import {
   is,
   isEmpty,
   head,
-  difference
+  difference,
+  prop,
+  sum,
+  eqProps
 } from 'ramda'
 import stack from './stack'
 
@@ -40,13 +44,10 @@ const getSurroundings = ({ x, y }) => [
 const getSurroundingLands = (aroundPos, board) =>
   filter(f => !!f, getSurroundings(aroundPos).map(getLand(board)))
 
-const matchBiome = expectedBiome => ({ biome }) =>
-  [expectedBiome, CASTLE_BIOME].includes(biome)
-
 const getBoard = kingdom =>
   kingdom.reduce(
     (board, placement) => {
-      if (board === null) return null
+      if (!board) return null
 
       const leftPos = getLeftPos(placement)
       const getLandOnPos = getLand(board)
@@ -63,8 +64,12 @@ const getBoard = kingdom =>
         return null
 
       if (
-        none(matchBiome(leftLand.biome), leftSurroundingLands) &&
-        none(matchBiome(rightLand.biome), rightSurroundingLands)
+        none(eqProps('biome', leftLand), leftSurroundingLands) &&
+        none(eqProps('biome', rightLand), rightSurroundingLands) &&
+        none(
+          eqProps('biome', { biome: CASTLE_BIOME }),
+          concat(leftSurroundingLands, rightSurroundingLands)
+        )
       )
         return null
 
@@ -80,29 +85,28 @@ const isValid = kingdom => {
 
 const getPoints = kingdom => {
   let board = getBoard(kingdom)
+  let points = 0
 
   while (!isEmpty(board)) {
     const head = board.pop()
-    const check = [head]
-    const hits = []
-
+    let check = [head]
+    let hits = [head]
     while (!isEmpty(check)) {
       const land = check.pop()
-      hits.push(land)
       const matching = filter(
-        matchBiome(head.biome),
+        eqProps('biome', head),
         getSurroundings(land)
           .map(getLand(board))
           .filter(f => !!f)
       )
-      matching.forEach(check.push)
-      matching.forEach(hits.push)
+      check = concat(check, matching)
+      hits = concat(hits, matching)
       board = difference(board, matching)
     }
-    console.log(`${hits.length} piece(s) of ${hits[0].biome}`)
+    points += hits.length * sum(hits.map(prop('crowns')))
   }
 
-  return 0
+  return points
 }
 
 export { getBoard, getPoints, isValid }
