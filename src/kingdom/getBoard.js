@@ -19,38 +19,38 @@ const getRightPos = ({ x, y, dir }) => {
 const getSurroundingLands = (aroundPos, board) =>
   filter(f => !!f, getSurroundings(aroundPos).map(getLand(board)))
 
-const getBoard = kingdom =>
-  kingdom.reduce(
-    (board, placement) => {
-      if (!board) return null
+const getBoard = (
+  placements,
+  initialBoard = [{ x: 0, y: 0, biome: CASTLE_BIOME, crowns: 0 }]
+) =>
+  placements.reduce((board, placement) => {
+    if (!board) return null
 
-      const leftPos = getLeftPos(placement)
-      const getLandOnPos = getLand(board)
-      if (getLandOnPos(leftPos)) return null
-      const leftLand = { ...leftPos, ...placement.domino[0] }
-      const leftSurroundingLands = getSurroundingLands(leftPos, board)
+    const leftPos = getLeftPos(placement)
+    const getLandOnPos = getLand(board)
+    if (getLandOnPos(leftPos)) return null
+    const leftLand = { ...leftPos, ...placement.domino[0] }
+    const leftSurroundingLands = getSurroundingLands(leftPos, board)
 
-      const rightPos = getRightPos(placement)
-      if (getLandOnPos(rightPos)) return null
-      const rightLand = { ...rightPos, ...placement.domino[1] }
-      const rightSurroundingLands = getSurroundingLands(rightPos, board)
+    const rightPos = getRightPos(placement)
+    if (getLandOnPos(rightPos)) return null
+    const rightLand = { ...rightPos, ...placement.domino[1] }
+    const rightSurroundingLands = getSurroundingLands(rightPos, board)
 
-      if (equals(leftSurroundingLands, []) && equals(rightSurroundingLands, []))
-        return null
+    if (equals(leftSurroundingLands, []) && equals(rightSurroundingLands, []))
+      return null
 
-      if (
-        none(eqProps('biome', leftLand), leftSurroundingLands) &&
-        none(eqProps('biome', rightLand), rightSurroundingLands) &&
-        none(
-          eqProps('biome', { biome: CASTLE_BIOME }),
-          concat(leftSurroundingLands, rightSurroundingLands)
-        )
+    if (
+      none(eqProps('biome', leftLand), leftSurroundingLands) &&
+      none(eqProps('biome', rightLand), rightSurroundingLands) &&
+      none(
+        eqProps('biome', { biome: CASTLE_BIOME }),
+        concat(leftSurroundingLands, rightSurroundingLands)
       )
-        return null
+    )
+      return null
 
-      return [...board, leftLand, rightLand]
-    },
-    [{ x: 0, y: 0, biome: CASTLE_BIOME, crowns: 0 }]
-  )
+    return [...board, leftLand, rightLand]
+  }, initialBoard)
 
 export default getBoard

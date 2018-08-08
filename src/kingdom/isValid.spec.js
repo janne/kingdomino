@@ -1,5 +1,6 @@
 import isValid from './isValid'
 import stack from './stack'
+import getBoard from './getBoard'
 
 const domino = stack[0]
 const overlappingCastle = { dir: 0, x: 0, y: 0, domino }
@@ -44,5 +45,11 @@ describe('isValid', () => {
 
   it('returns true for correct board', () => {
     expect(isValid(validPlacements)).toEqual(true)
+  })
+
+  it('allows for extra placements on a board', () => {
+    const board = getBoard(validPlacements)
+    const extraPlacement = { dir: 0, x: 0, y: -1, domino: stack[3] }
+    expect(isValid([extraPlacement], board)).toEqual(true)
   })
 })

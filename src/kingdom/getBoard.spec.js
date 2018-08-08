@@ -10,6 +10,7 @@ const validPlacements = [
   { dir: 0, x: 3, y: 1, domino: stack[8] },
   { dir: 0, x: -2, y: 1, domino: stack[16] }
 ]
+const extraPlacement = { dir: 0, x: 0, y: -1, domino: stack[3] }
 
 describe('getBoard', () => {
   it('returns null for invalid kingdoms', () => {
@@ -22,5 +23,12 @@ describe('getBoard', () => {
       { x: 1, y: 0, crowns: 0, biome: 'Field' },
       { x: 2, y: 0, crowns: 0, biome: 'Field' }
     ])
+  })
+
+  it('allows for extra placements on a board', () => {
+    const board = getBoard(validPlacements)
+    expect(board.length).toEqual(11)
+    const board2 = getBoard([extraPlacement], board)
+    expect(board2.length).toEqual(13)
   })
 })
