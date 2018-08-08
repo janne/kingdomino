@@ -1,4 +1,4 @@
-import { isValid, getBoard, getPoints } from './kingdom'
+import isValid from './isValid'
 import stack from './stack'
 
 const domino = stack[0]
@@ -44,29 +44,5 @@ describe('isValid', () => {
 
   it('returns true for correct board', () => {
     expect(isValid(validPlacements)).toEqual(true)
-  })
-})
-
-describe('getBoard', () => {
-  it('returns null for invalid kingdoms', () => {
-    expect(getBoard([overlappingCastle])).toEqual(null)
-  })
-
-  it('returns the board for a valid placement', () => {
-    expect(getBoard([validPlacements[0]])).toEqual([
-      { x: 0, y: 0, crowns: 0, biome: 'Castle' },
-      { x: 1, y: 0, crowns: 0, biome: 'Field' },
-      { x: 2, y: 0, crowns: 0, biome: 'Field' }
-    ])
-  })
-})
-
-describe('getPoints', () => {
-  it('returns 0 for empty board', () => {
-    expect(getPoints([])).toEqual(0)
-  })
-
-  it('returns correct points for valid kingdom', () => {
-    expect(getPoints(validPlacements)).toEqual(11)
   })
 })

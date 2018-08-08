@@ -1,21 +1,6 @@
-import {
-  concat,
-  equals,
-  filter,
-  find,
-  pick,
-  none,
-  is,
-  isEmpty,
-  head,
-  difference,
-  prop,
-  sum,
-  eqProps
-} from 'ramda'
-import stack from './stack'
-
-const CASTLE_BIOME = 'Castle'
+import { equals, filter, none, eqProps, concat } from 'ramda'
+import { getSurroundings, getLand } from './utils'
+import { CASTLE_BIOME } from './constants'
 
 const getLeftPos = ({ x, y }) => ({ x, y })
 const getRightPos = ({ x, y, dir }) => {
@@ -30,16 +15,6 @@ const getRightPos = ({ x, y, dir }) => {
       return { x, y: y - 1 }
   }
 }
-
-const getLand = board => pos =>
-  find(landPos => equals(pos, pick(['x', 'y'], landPos)), board)
-
-const getSurroundings = ({ x, y }) => [
-  { x, y: y - 1 },
-  { x, y: y + 1 },
-  { x: x - 1, y },
-  { x: x + 1, y }
-]
 
 const getSurroundingLands = (aroundPos, board) =>
   filter(f => !!f, getSurroundings(aroundPos).map(getLand(board)))
@@ -75,38 +50,7 @@ const getBoard = kingdom =>
 
       return [...board, leftLand, rightLand]
     },
-    [{ x: 0, y: 0, biome: 'Castle', crowns: 0 }]
+    [{ x: 0, y: 0, biome: CASTLE_BIOME, crowns: 0 }]
   )
 
-const isValid = kingdom => {
-  if (!is(Array, kingdom)) return false
-  return getBoard(kingdom) !== null
-}
-
-const getPoints = kingdom => {
-  let board = getBoard(kingdom)
-  let points = 0
-
-  while (!isEmpty(board)) {
-    const head = board.pop()
-    let check = [head]
-    let hits = [head]
-    while (!isEmpty(check)) {
-      const land = check.pop()
-      const matching = filter(
-        eqProps('biome', head),
-        getSurroundings(land)
-          .map(getLand(board))
-          .filter(f => !!f)
-      )
-      check = concat(check, matching)
-      hits = concat(hits, matching)
-      board = difference(board, matching)
-    }
-    points += hits.length * sum(hits.map(prop('crowns')))
-  }
-
-  return points
-}
-
-export { getBoard, getPoints, isValid }
+export default getBoard
