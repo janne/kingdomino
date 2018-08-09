@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "pixi.js": "^4.8.1",
     "ramda": "^0.25.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
