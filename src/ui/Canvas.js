@@ -6,10 +6,6 @@ class Canvas extends Component {
   app: PIXI.Application
   gameCanvas: HTMLDivElement
 
-  constructor() {
-    super()
-  }
-
   drawGraphics() {
     var graphics = new PIXI.Graphics()
     graphics.lineStyle(1, 0xe0e0e0, 1)
@@ -31,6 +27,48 @@ class Canvas extends Component {
     return graphics
   }
 
+  makeSprite(renderer) {
+    const graphics = new PIXI.Graphics()
+    graphics.beginFill(0xff22aa)
+    graphics.drawRect(0, 0, 99, 49)
+    graphics.endFill()
+    const texture = renderer.generateTexture(graphics)
+    const sprite = new PIXI.Sprite(texture)
+    sprite.interactive = true
+    sprite.buttonMode = true
+    sprite.anchor.set(0.5)
+
+    sprite
+      .on('mousedown', event => {
+        sprite.data = event.data
+        sprite.alpha = 0.5
+        sprite.dragging = true
+      })
+
+      .on('mouseup', () => {
+        sprite.alpha = 1
+        sprite.dragging = false
+        sprite.data = null
+        sprite.x = Math.floor((sprite.x + 25) / 50) * 50 + 1
+        sprite.y = Math.floor(sprite.y / 50) * 50 + 26
+      })
+
+      .on('mouseupoutside', () => {
+        sprite.alpha = 1
+        sprite.dragging = false
+        sprite.data = null
+      })
+
+      .on('mousemove', event => {
+        if (sprite.dragging) {
+          var newPosition = sprite.data.getLocalPosition(sprite.parent)
+          sprite.x = newPosition.x
+          sprite.y = newPosition.y
+        }
+      })
+    return sprite
+  }
+
   componentDidMount() {
     this.app = new PIXI.Application(800, 452, {
       backgroundColor: 0xffffff
@@ -39,6 +77,10 @@ class Canvas extends Component {
     const graphics = this.drawGraphics()
     this.app.stage.addChild(graphics)
 
+    const sprite = this.makeSprite(this.app.renderer)
+    sprite.x = 550
+    sprite.y = 200
+    this.app.stage.addChild(sprite)
     this.gameCanvas.appendChild(this.app.view)
     this.app.start()
   }
@@ -51,7 +93,7 @@ class Canvas extends Component {
     let component = this
     return (
       <div
-        class="Canvas"
+        className="Canvas"
         ref={thisDiv => {
           component.gameCanvas = thisDiv
         }}
