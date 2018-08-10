@@ -30,12 +30,26 @@ class Canvas extends Component {
   makeSprite(renderer, xMargin, yMargin) {
     const graphics = new PIXI.Graphics()
     graphics.beginFill(0xff22aa)
-    graphics.drawRect(0, 0, 100, 50)
+    graphics.drawRect(0, 0, 50, 50)
+    graphics.endFill()
+    graphics.beginFill(0x22ffaa)
+    graphics.drawRect(50, 0, 50, 50)
     graphics.endFill()
     const texture = renderer.generateTexture(graphics)
     const sprite = new PIXI.Sprite(texture)
     sprite.interactive = true
     sprite.buttonMode = true
+
+    var textLeft = new PIXI.Text('H')
+    textLeft.x = -25
+    textLeft.anchor.set(0.5)
+    sprite.addChild(textLeft)
+    sprite.anchor.set(0.5)
+
+    var textRight = new PIXI.Text('O')
+    textRight.x = 25
+    textRight.anchor.set(0.5)
+    sprite.addChild(textRight)
     sprite.anchor.set(0.5)
 
     sprite
