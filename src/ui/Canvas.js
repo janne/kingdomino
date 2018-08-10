@@ -40,55 +40,62 @@ class Canvas extends Component {
     sprite.interactive = true
     sprite.buttonMode = true
 
-    var textLeft = new PIXI.Text('H')
+    var textLeft = new PIXI.Text('F')
     textLeft.x = -25
     textLeft.anchor.set(0.5)
     sprite.addChild(textLeft)
     sprite.anchor.set(0.5)
 
-    var textRight = new PIXI.Text('O')
+    var textRight = new PIXI.Text('G')
     textRight.x = 25
     textRight.anchor.set(0.5)
     sprite.addChild(textRight)
     sprite.anchor.set(0.5)
 
+    const mouseUp = () => {
+      sprite.alpha = 1
+      sprite.dragging = false
+      sprite.data = null
+      if (sprite.previousX === sprite.x && sprite.previousY === sprite.y) {
+        sprite.rotation += Math.PI / 2
+        if (sprite.rotation === Math.PI * 2) {
+          sprite.rotation = 0
+        }
+      }
+      const horizontal = sprite.rotation === 0 || sprite.rotation === Math.PI
+      const xPos = Math.floor((sprite.x - xMargin - (horizontal ? 25 : 0)) / 50)
+      const yPos = Math.floor((sprite.y - yMargin - (horizontal ? 0 : 25)) / 50)
+      if (xPos >= 0 && yPos >= 0 && xPos < 9 && yPos < 9) {
+        sprite.x = xPos * 50 + 25 + (horizontal ? 25 : 0) + xMargin
+        sprite.y = yPos * 50 + 25 + (horizontal ? 0 : 25) + yMargin
+      } else {
+        sprite.x = sprite.previousX
+        sprite.y = sprite.previousY
+      }
+    }
+
+    const mouseMove = event => {
+      if (sprite.dragging) {
+        var newPosition = sprite.data.getLocalPosition(sprite.parent)
+        sprite.x = newPosition.x
+        sprite.y = newPosition.y
+      }
+    }
+
+    const mouseDown = event => {
+      sprite.data = event.data
+      sprite.alpha = 0.5
+      sprite.dragging = true
+      sprite.previousX = sprite.x
+      sprite.previousY = sprite.y
+    }
+
     sprite
-      .on('mousedown', event => {
-        sprite.data = event.data
-        sprite.alpha = 0.5
-        sprite.dragging = true
-        sprite.previousX = sprite.x
-        sprite.previousY = sprite.y
-      })
+      .on('mousedown', mouseDown)
+      .on('mouseup', mouseUp)
+      .on('mouseupoutside', mouseUp)
+      .on('mousemove', mouseMove)
 
-      .on('mouseup', () => {
-        sprite.alpha = 1
-        sprite.dragging = false
-        sprite.data = null
-        const xPos = Math.floor((sprite.x - xMargin - 25) / 50)
-        const yPos = Math.floor((sprite.y - yMargin) / 50)
-        if (xPos >= 0 && yPos >= 0 && xPos < 8 && yPos < 9) {
-          sprite.x = xPos * 50 + 50 + xMargin
-          sprite.y = yPos * 50 + 25 + yMargin
-        } else {
-          sprite.x = sprite.previousX
-          sprite.y = sprite.previousY
-        }
-      })
-
-      .on('mouseupoutside', () => {
-        sprite.alpha = 1
-        sprite.dragging = false
-        sprite.data = null
-      })
-
-      .on('mousemove', event => {
-        if (sprite.dragging) {
-          var newPosition = sprite.data.getLocalPosition(sprite.parent)
-          sprite.x = newPosition.x
-          sprite.y = newPosition.y
-        }
-      })
     return sprite
   }
 
