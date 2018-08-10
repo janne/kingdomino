@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import './Canvas.css'
 import Domino from './Domino'
 import Board from './Board'
+import Background from './Background'
 import * as PIXI from 'pixi.js'
 
 class Canvas extends Component {
   constructor() {
     super()
+
     this.app = new PIXI.Application({
       autoresize: true,
       backgroundColor: 0xffffff,
@@ -23,7 +25,10 @@ class Canvas extends Component {
   componentDidMount() {
     this.container.addChild(this.board)
 
-    const domino = new Domino(this.app.renderer)
+    const texture = this.app.renderer.generateTexture(
+      new Background('Field', 'Grassland')
+    )
+    const domino = new Domino(texture)
     domino.x = 550
     domino.y = 225
     this.container.addChild(domino)
