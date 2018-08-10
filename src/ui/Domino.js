@@ -13,7 +13,7 @@ class Background extends PIXI.Graphics {
 }
 
 class Domino extends PIXI.Sprite {
-  constructor(renderer, xMargin, yMargin) {
+  constructor(renderer) {
     const graphics = new Background('Field', 'Grassland')
     const texture = renderer.generateTexture(graphics)
     super(texture)
@@ -21,9 +21,6 @@ class Domino extends PIXI.Sprite {
     this.interactive = true
     this.buttonMode = true
     this.anchor.set(0.5)
-
-    this.xMargin = xMargin
-    this.yMargin = yMargin
 
     var textLeft = new PIXI.Text('F')
     textLeft.x = -25
@@ -67,11 +64,11 @@ class Domino extends PIXI.Sprite {
     }
     const h = this.isHorizontal()
 
-    const xPos = Math.floor((this.x - this.xMargin - (h ? 25 : 0)) / 50)
-    const yPos = Math.floor((this.y - this.yMargin - (h ? 0 : 25)) / 50)
+    const xPos = Math.floor((this.x - (h ? 25 : 0)) / 50)
+    const yPos = Math.floor((this.y - (h ? 0 : 25)) / 50)
     if (xPos >= 0 && yPos >= 0 && xPos < 9 && yPos < 9) {
-      this.x = xPos * 50 + 25 + (h ? 25 : 0) + this.xMargin
-      this.y = yPos * 50 + 25 + (h ? 0 : 25) + this.yMargin
+      this.x = xPos * 50 + 25 + (h ? 25 : 0)
+      this.y = yPos * 50 + 25 + (h ? 0 : 25)
     } else {
       this.x = this.previousX
       this.y = this.previousY

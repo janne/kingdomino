@@ -9,40 +9,39 @@ class Canvas extends Component {
     super()
     this.app = new PIXI.Application({
       autoresize: true,
-      resolution: devicePixelRatio,
-      backgroundColor: 0xffffff
+      backgroundColor: 0xffffff,
+      resolution: devicePixelRatio
     })
 
     this.board = new Board()
 
-    window.addEventListener('resize', this.resize(this.app.renderer))
+    this.container = new PIXI.Container()
+
+    window.addEventListener('resize', this.resize())
   }
 
   componentDidMount() {
-    const xMargin = (window.innerWidth - 450) / 2
-    const yMargin = (window.innerHeight - 550) / 2
+    this.container.addChild(this.board)
 
-    this.board.x = xMargin
-    this.board.y = yMargin
-    this.app.stage.addChild(this.board)
+    const domino = new Domino(this.app.renderer)
+    domino.x = 550
+    domino.y = 225
+    this.container.addChild(domino)
 
-    const sprite = new Domino(this.app.renderer, xMargin, yMargin)
-    sprite.x = 550 + xMargin
-    sprite.y = 225 + yMargin
-    this.app.stage.addChild(sprite)
+    this.app.stage.addChild(this.container)
 
-    this.resize()
+    this.resize()()
 
     this.gameCanvas.appendChild(this.app.view)
     this.app.start()
   }
 
-  resize(renderer) {
-    this.app.renderer.resize(window.innerWidth, window.innerHeight - 100)
-    const xMargin = (window.innerWidth - 450) / 2
-    const yMargin = (window.innerHeight - 550) / 2
-    this.board.x = xMargin
-    this.board.y = yMargin
+  resize() {
+    return () => {
+      this.app.renderer.resize(window.innerWidth, window.innerHeight - 100)
+      this.container.x = (window.innerWidth - 450) / 2
+      this.container.y = (window.innerHeight - 550) / 2
+    }
   }
 
   componentWillUnmount() {
