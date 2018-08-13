@@ -8,17 +8,20 @@ class Domino extends Component {
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired
+    height: PropTypes.number.isRequired,
+    rotation: PropTypes.number.isRequired,
+    rotate: PropTypes.func.isRequired
   }
 
   render() {
     const { x, y, width, height } = this.props
     return (
       <Container
-        pointerdown={this.handlePointerDown}
-        pointerup={this.handlePointerUp}
-        pointerupoutside={this.handlePointerUp}
-        pointermove={this.handlePointerMove}
+        pointerdown={e => this.handlePointerDown(e)}
+        pointerup={e => this.handlePointerUp()}
+        pointerupoutside={e => this.handlePointerUp()}
+        pointermove={e => this.handlePointerMove()}
+        rotation={this.props.rotation * (Math.PI / 2)}
         interactive={true}
         buttonMode={true}
         x={x}
@@ -64,10 +67,7 @@ class Domino extends Component {
     const dominoLength = this.height
 
     if (this.previousX === this.x && this.previousY === this.y) {
-      this.rotation += Math.PI / 2
-      if (this.rotation === Math.PI * 2) {
-        this.rotation = 0
-      }
+      this.props.rotate()
     }
 
     const h = this.rotation === 0 || this.rotation === Math.PI
