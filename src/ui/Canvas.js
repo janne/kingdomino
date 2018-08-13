@@ -4,29 +4,10 @@ import Board from './Board'
 import { Stage, Container } from 'react-pixi-fiber'
 
 class Canvas extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      height: window.innerHeight - 100,
-      width: window.innerWidth
-    }
-  }
-
-  componentDidMount() {
-    this.resize()()
-    window.addEventListener('resize', this.resize())
-  }
-
-  resize() {
-    return () => {
-      this.setState({
-        width: window.innerWidth,
-        height: window.innerHeight - 100
-      })
-    }
-  }
-
   render() {
+    const { width, height } = this.props
+    const sideLength = (height < width ? height : width) - 40
+    const dominoLength = sideLength / 9
     return (
       <Stage
         options={{
@@ -34,12 +15,20 @@ class Canvas extends Component {
           autoresize: true,
           resolution: devicePixelRatio
         }}
-        width={this.state.width}
-        height={this.state.height}
+        width={width}
+        height={height}
       >
-        <Container x={this.state.width / 2 - 225} y={20}>
-          <Board width={450} height={450} />
-          <Domino width={100} height={50} x={520} y={450 / 2} />
+        <Container
+          x={width / 2 - sideLength / 2}
+          y={height / 2 - sideLength / 2}
+        >
+          <Board width={sideLength} height={sideLength} />
+          <Domino
+            width={2 * dominoLength}
+            height={dominoLength}
+            x={sideLength + 2 * dominoLength}
+            y={sideLength / 2}
+          />
         </Container>
       </Stage>
     )

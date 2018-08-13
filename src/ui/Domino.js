@@ -4,6 +4,7 @@ import { Sprite, Container } from 'react-pixi-fiber'
 
 class Domino extends Component {
   render() {
+    const { x, y, width, height } = this.props
     return (
       <Container
         pointerdown={this.handlePointerDown}
@@ -12,19 +13,19 @@ class Domino extends Component {
         pointermove={this.handlePointerMove}
         interactive={true}
         buttonMode={true}
-        x={this.props.x}
-        y={this.props.y}
-        pivot={new PIXI.Point(50, 25)}
+        x={x}
+        y={y}
+        pivot={new PIXI.Point(width / 2, height / 2)}
       >
         <Sprite
-          width={this.props.width / 2}
-          height={this.props.height}
+          width={width / 2}
+          height={height}
           texture={PIXI.Texture.fromImage('images/FIELD_0.png')}
         />
         <Sprite
-          width={this.props.width / 2}
-          height={this.props.height}
-          x={this.props.width / 2}
+          width={width / 2}
+          height={height}
+          x={width / 2}
           texture={PIXI.Texture.fromImage('images/FIELD_1.png')}
         />
       </Container>
@@ -52,6 +53,8 @@ class Domino extends Component {
     this.dragging = false
     this.data = null
 
+    const dominoLength = this.height
+
     if (this.previousX === this.x && this.previousY === this.y) {
       this.rotation += Math.PI / 2
       if (this.rotation === Math.PI * 2) {
@@ -61,11 +64,17 @@ class Domino extends Component {
 
     const h = this.rotation === 0 || this.rotation === Math.PI
 
-    const xPos = Math.floor((this.x - (h ? 25 : 0)) / 50)
-    const yPos = Math.floor((this.y - (h ? 0 : 25)) / 50)
+    const xPos = Math.floor(
+      (this.x - (h ? dominoLength / 2 : 0)) / dominoLength
+    )
+    const yPos = Math.floor(
+      (this.y - (h ? 0 : dominoLength / 2)) / dominoLength
+    )
     if (xPos >= 0 && yPos >= 0 && xPos < 9 && yPos < 9) {
-      this.x = xPos * 50 + 25 + (h ? 25 : 0)
-      this.y = yPos * 50 + 25 + (h ? 0 : 25)
+      this.x =
+        xPos * dominoLength + dominoLength / 2 + (h ? dominoLength / 2 : 0)
+      this.y =
+        yPos * dominoLength + dominoLength / 2 + (h ? 0 : dominoLength / 2)
     } else {
       this.x = this.previousX
       this.y = this.previousY
