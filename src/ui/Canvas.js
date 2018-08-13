@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Domino from './Domino'
 import Board from './Board'
 import { Stage, Container } from 'react-pixi-fiber'
 
 class Canvas extends Component {
+  static propTypes = {
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired
+  }
+
   render() {
     const { width, height } = this.props
     const sideLength = (height < width ? height : width) - 40

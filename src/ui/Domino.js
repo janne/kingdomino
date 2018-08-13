@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import * as PIXI from 'pixi.js'
 import { Sprite, Container } from 'react-pixi-fiber'
 
 class Domino extends Component {
+  static propTypes = {
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired
+  }
+
   render() {
     const { x, y, width, height } = this.props
     return (
