@@ -19,6 +19,7 @@ class App extends Component {
 
   render() {
     const { width, height } = this.props
+    if (width < 100 || height < 100) return null
     const sideLength = (height < width ? height : width) - 40
     const dominoLength = sideLength / 9
     return (
