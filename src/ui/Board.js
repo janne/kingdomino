@@ -3,19 +3,26 @@ import * as PIXI from 'pixi.js'
 
 export const behavior = {
   customDisplayObject: props => new PIXI.Graphics(),
-  customApplyProps: function(instance, oldProps, newProps) {
-    if (oldProps !== undefined) instance.clear()
+  customApplyProps: function(graphics, oldProps, newProps) {
+    if (oldProps !== undefined) graphics.clear()
     const { width, height } = newProps
-    instance.lineStyle(1, 0xe0e0e0, 1)
     const colWidth = width / 9
     const lineHeight = height / 9
 
+    // Grid
+    graphics.lineStyle(1, 0xe0e0e0, 1)
     for (let line = 0; line < 10; line++) {
-      instance.moveTo(0, line * lineHeight).lineTo(width, line * lineHeight)
+      graphics.moveTo(0, line * lineHeight).lineTo(width, line * lineHeight)
       for (let col = 0; col < 10; col++) {
-        instance.moveTo(col * colWidth, 0).lineTo(col * colWidth, height)
+        graphics.moveTo(col * colWidth, 0).lineTo(col * colWidth, height)
       }
     }
+
+    // Castle
+    graphics
+      .beginFill(0xdddddd)
+      .drawRect(colWidth * 4, colWidth * 4, colWidth, colWidth)
+      .endFill()
   }
 }
 export default CustomPIXIComponent(behavior, 'Board')
