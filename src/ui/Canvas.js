@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Domino from './Domino'
 import Board from './Board'
-import { Stage } from 'react-pixi-fiber'
+import { Stage, Container } from 'react-pixi-fiber'
 
 class Canvas extends Component {
   constructor(props) {
@@ -37,13 +37,10 @@ class Canvas extends Component {
         width={this.state.width}
         height={this.state.height}
       >
-        <Board width={450} height={450} x={this.state.width / 2 - 225} y={20} />
-        <Domino
-          width={100}
-          height={50}
-          x={this.state.width / 2 + 270}
-          y={245}
-        />
+        <Container x={this.state.width / 2 - 225} y={20}>
+          <Board width={450} height={450} />
+          <Domino width={100} height={50} x={520} y={450 / 2} />
+        </Container>
       </Stage>
     )
   }
