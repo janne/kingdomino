@@ -9,9 +9,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Kingdomino</h1>
         </header>
-        <div className="App-body">
-          <Canvas />
-        </div>
+        <Canvas />
       </div>
     )
   }

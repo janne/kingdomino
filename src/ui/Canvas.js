@@ -1,67 +1,50 @@
 import React, { Component } from 'react'
-import './Canvas.css'
 import Domino from './Domino'
 import Board from './Board'
-import Background from './Background'
-import * as PIXI from 'pixi.js'
+import { Stage } from 'react-pixi-fiber'
 
 class Canvas extends Component {
-  constructor() {
-    super()
-
-    this.app = new PIXI.Application({
-      autoresize: true,
-      backgroundColor: 0xffffff,
-      resolution: devicePixelRatio
-    })
-
-    this.board = new Board()
-
-    this.container = new PIXI.Container()
-
-    window.addEventListener('resize', this.resize())
+  constructor(props) {
+    super(props)
+    this.state = {
+      height: window.innerHeight - 100,
+      width: window.innerWidth
+    }
   }
 
   componentDidMount() {
-    this.container.addChild(this.board)
-
-    const texture = this.app.renderer.generateTexture(
-      new Background('Field', 'Grassland')
-    )
-    const domino = new Domino(texture)
-    domino.x = 550
-    domino.y = 225
-    this.container.addChild(domino)
-
-    this.app.stage.addChild(this.container)
-
     this.resize()()
-
-    this.gameCanvas.appendChild(this.app.view)
-    this.app.start()
+    window.addEventListener('resize', this.resize())
   }
 
   resize() {
     return () => {
-      this.app.renderer.resize(window.innerWidth, window.innerHeight - 100)
-      this.container.x = (window.innerWidth - 450) / 2
-      this.container.y = (window.innerHeight - 550) / 2
+      this.setState({
+        width: window.innerWidth,
+        height: window.innerHeight - 100
+      })
     }
   }
 
-  componentWillUnmount() {
-    this.app.stop()
-  }
-
   render() {
-    let component = this
     return (
-      <div
-        className="Canvas"
-        ref={thisDiv => {
-          component.gameCanvas = thisDiv
+      <Stage
+        options={{
+          backgroundColor: 0xffffff,
+          autoresize: true,
+          resolution: devicePixelRatio
         }}
-      />
+        width={this.state.width}
+        height={this.state.height}
+      >
+        <Board width={450} height={450} x={this.state.width / 2 - 225} y={20} />
+        <Domino
+          width={100}
+          height={50}
+          x={this.state.width / 2 + 270}
+          y={245}
+        />
+      </Stage>
     )
   }
 }

@@ -1,30 +1,45 @@
+import React, { Component } from 'react'
 import * as PIXI from 'pixi.js'
+import { Sprite, Container } from 'react-pixi-fiber'
 
-class Domino extends PIXI.Sprite {
-  constructor(texture) {
-    super(texture)
-
-    this.interactive = true
-    this.buttonMode = true
-    this.anchor.set(0.5)
-
-    var textLeft = new PIXI.Text('F')
-    textLeft.x = -25
-    textLeft.anchor.set(0.5)
-    this.addChild(textLeft)
-
-    var textRight = new PIXI.Text('G')
-    textRight.x = 25
-    textRight.anchor.set(0.5)
-    this.addChild(textRight)
-
-    this.on('mousedown', this.mouseDown)
-      .on('mouseup', this.mouseUp)
-      .on('mouseupoutside', this.mouseUp)
-      .on('mousemove', this.mouseMove)
+class Domino extends Component {
+  render() {
+    const anchor = new PIXI.Point(0.5, 0.5)
+    return (
+      <Container
+        pointerdown={this.handlePointerDown}
+        pointerup={this.handlePointerUp}
+        pointerupoutside={this.handlePointerUp}
+        pointermove={this.handlePointerMove}
+        interactive={true}
+        buttonMode={true}
+        interactiveChildren={false}
+        anchor={anchor}
+        rotation={Math.PI / 10}
+      >
+        <Sprite
+          width={this.props.width / 2}
+          height={this.props.height}
+          x={this.props.x}
+          y={this.props.y}
+          rotation={Math.PI / 10}
+          anchor={anchor}
+          texture={PIXI.Texture.fromImage('images/FIELD_0.png')}
+        />
+        <Sprite
+          width={this.props.width / 2}
+          height={this.props.height}
+          x={this.props.x + this.props.width / 2}
+          y={this.props.y}
+          rotation={Math.PI / 10}
+          anchor={anchor}
+          texture={PIXI.Texture.fromImage('images/FIELD_1.png')}
+        />
+      </Container>
+    )
   }
 
-  mouseDown(event) {
+  handlePointerDown(event) {
     this.data = event.data
     this.alpha = 0.5
     this.dragging = true
@@ -32,7 +47,7 @@ class Domino extends PIXI.Sprite {
     this.previousY = this.y
   }
 
-  mouseMove(event) {
+  handlePointerMove() {
     if (this.dragging) {
       var newPosition = this.data.getLocalPosition(this.parent)
       this.x = newPosition.x
@@ -40,15 +55,19 @@ class Domino extends PIXI.Sprite {
     }
   }
 
-  mouseUp() {
+  handlePointerUp() {
     this.alpha = 1
     this.dragging = false
     this.data = null
 
     if (this.previousX === this.x && this.previousY === this.y) {
-      this.rotate()
+      this.rotation += Math.PI / 2
+      if (this.rotation === Math.PI * 2) {
+        this.rotation = 0
+      }
     }
-    const h = this.isHorizontal()
+
+    const h = this.rotation === 0 || this.rotation === Math.PI
 
     const xPos = Math.floor((this.x - (h ? 25 : 0)) / 50)
     const yPos = Math.floor((this.y - (h ? 0 : 25)) / 50)
@@ -58,17 +77,6 @@ class Domino extends PIXI.Sprite {
     } else {
       this.x = this.previousX
       this.y = this.previousY
-    }
-  }
-
-  isHorizontal() {
-    return this.rotation === 0 || this.rotation === Math.PI
-  }
-
-  rotate() {
-    this.rotation += Math.PI / 2
-    if (this.rotation === Math.PI * 2) {
-      this.rotation = 0
     }
   }
 }

@@ -1,24 +1,23 @@
+import { CustomPIXIComponent } from 'react-pixi-fiber'
 import * as PIXI from 'pixi.js'
 
-class Board extends PIXI.Graphics {
-  constructor() {
-    super()
-    this.lineStyle(1, 0xe0e0e0, 1)
+export const behavior = {
+  customDisplayObject: props => new PIXI.Graphics(),
+  customApplyProps: function(instance, oldProps, newProps) {
+    instance.clear()
+    const { x, y, width, height } = newProps
+    instance.lineStyle(1, 0xe0e0e0, 1)
+    const colWidth = width / 9
+    const lineHeight = height / 9
 
-    for (let y = 0; y < 10; y++) {
-      this.moveTo(0, y * 50)
-      this.lineTo(450, y * 50)
-      for (let x = 0; x < 10; x++) {
-        this.moveTo(x * 50, 0)
-        this.lineTo(x * 50, 450 + 0)
+    for (let line = 0; line < 10; line++) {
+      instance.moveTo(x, y + line * lineHeight)
+      instance.lineTo(x + width, y + line * lineHeight)
+      for (let col = 0; col < 10; col++) {
+        instance.moveTo(x + col * colWidth, y)
+        instance.lineTo(x + col * colWidth, y + height)
       }
     }
-
-    this.lineStyle(1, 0, 1)
-    this.beginFill(0x88ee88)
-    this.drawRect(200, 200, 50, 50)
-    this.endFill()
   }
 }
-
-export default Board
+export default CustomPIXIComponent(behavior, 'Board')
