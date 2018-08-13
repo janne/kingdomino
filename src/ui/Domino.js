@@ -4,7 +4,6 @@ import { Sprite, Container } from 'react-pixi-fiber'
 
 class Domino extends Component {
   render() {
-    const anchor = new PIXI.Point(0.5, 0.5)
     return (
       <Container
         pointerdown={this.handlePointerDown}
@@ -13,26 +12,19 @@ class Domino extends Component {
         pointermove={this.handlePointerMove}
         interactive={true}
         buttonMode={true}
-        interactiveChildren={false}
-        anchor={anchor}
-        rotation={Math.PI / 10}
+        x={this.props.x}
+        y={this.props.y}
+        pivot={new PIXI.Point(50, 25)}
       >
         <Sprite
           width={this.props.width / 2}
           height={this.props.height}
-          x={this.props.x}
-          y={this.props.y}
-          rotation={Math.PI / 10}
-          anchor={anchor}
           texture={PIXI.Texture.fromImage('images/FIELD_0.png')}
         />
         <Sprite
           width={this.props.width / 2}
           height={this.props.height}
-          x={this.props.x + this.props.width / 2}
-          y={this.props.y}
-          rotation={Math.PI / 10}
-          anchor={anchor}
+          x={this.props.width / 2}
           texture={PIXI.Texture.fromImage('images/FIELD_1.png')}
         />
       </Container>
