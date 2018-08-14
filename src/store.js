@@ -16,7 +16,7 @@ const initialState = {
   deck: stack.slice(3),
   dragging: false,
   picked: stack[4],
-  rotation: 0,
+  dir: 0,
   pos: { x: 0, y: 0 }
 }
 
@@ -28,8 +28,8 @@ export const reducers = (state = initialState, action) => {
       const { width, height } = action
       return { ...state, width, height }
     case ROTATE:
-      const rotation = (state.rotation + 1) % 4
-      return { ...state, rotation }
+      const dir = (state.dir + 1) % 4
+      return { ...state, dir }
     case START_DRAGGING:
       const { previousPos } = action
       return { ...state, dragging: true, previousPos }

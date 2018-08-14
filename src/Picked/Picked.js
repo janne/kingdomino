@@ -17,7 +17,7 @@ class Picked extends Component {
     domino: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
-    rotation: PropTypes.number.isRequired,
+    dir: PropTypes.number.isRequired,
     dragging: PropTypes.bool.isRequired,
     rotate: PropTypes.func.isRequired,
     startDragging: PropTypes.func.isRequired,
@@ -38,7 +38,7 @@ class Picked extends Component {
   }
 
   render() {
-    const { pos, width, height, dragging } = this.props
+    const { pos, width, height, dragging, dir } = this.props
     return (
       <Container
         ref="container"
@@ -46,7 +46,7 @@ class Picked extends Component {
         pointerup={e => this.handlePointerUp()}
         pointerupoutside={e => this.handlePointerUp()}
         pointermove={e => this.handlePointerMove(e)}
-        rotation={this.props.rotation * (Math.PI / 2)}
+        rotation={dir * (Math.PI / 2)}
         interactive={true}
         buttonMode={true}
         alpha={dragging ? 0.5 : 1}
@@ -84,22 +84,22 @@ class Picked extends Component {
     this.props.endDragging()
 
     const dominoLength = this.refs.container.height
-    const { pos, previousPos, rotation, placements } = this.props
+    const { pos, previousPos, dir, placements, domino } = this.props
 
     if (previousPos.x === pos.x && previousPos.y === pos.y) {
       this.props.rotate()
     }
 
-    const h = rotation % 2 === 0
+    const h = dir % 2 === 0
 
     const xPos = Math.floor((pos.x - (h ? dominoLength / 2 : 0)) / dominoLength)
     const yPos = Math.floor((pos.y - (h ? 0 : dominoLength / 2)) / dominoLength)
 
     const placement = {
-      x: xPos - 4 + (rotation === 2 ? 1 : 0),
-      y: yPos - 4 + (rotation === 3 ? 1 : 0),
-      dir: rotation,
-      domino: this.props.domino
+      x: xPos - 4 + (dir === 2 ? 1 : 0),
+      y: yPos - 4 + (dir === 3 ? 1 : 0),
+      dir,
+      domino
     }
 
     if (isValid([...placements, placement])) {
