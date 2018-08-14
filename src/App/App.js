@@ -22,10 +22,11 @@ class App extends Component {
 
   componentDidMount() {
     this.props.resize(window.innerWidth, window.innerHeight)
-    window.addEventListener('resize', () =>
-      this.props.resize(window.innerWidth, window.innerHeight)
-    )
     this.props.moveTo(this.dominoStartPos())
+    window.addEventListener('resize', () => {
+      this.props.resize(window.innerWidth, window.innerHeight)
+      this.props.moveTo(this.dominoStartPos())
+    })
   }
 
   min(a, b) {
