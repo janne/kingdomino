@@ -13,6 +13,8 @@ const getRightPos = ({ x, y, dir }) => {
       return { x: x - 1, y }
     case 3:
       return { x, y: y - 1 }
+    default:
+      return undefined
   }
 }
 
