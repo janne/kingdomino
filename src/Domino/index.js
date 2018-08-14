@@ -3,8 +3,8 @@ import Domino from './Domino'
 import { rotate, startDragging, endDragging, moveTo } from '../store'
 
 const mapStateToProps = state => {
-  const { rotation, dragging, pos, previousPos } = state
-  return { rotation, dragging, pos, previousPos }
+  const { rotation, dragging, pos, previousPos, picked } = state
+  return { rotation, dragging, pos, previousPos, picked }
 }
 
 const mapDispatchToProps = dispatch => ({

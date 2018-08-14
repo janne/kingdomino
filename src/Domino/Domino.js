@@ -13,6 +13,7 @@ class Domino extends Component {
       x: PropTypes.number,
       y: PropTypes.number
     }),
+    picked: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     rotation: PropTypes.number.isRequired,
@@ -20,6 +21,18 @@ class Domino extends Component {
     rotate: PropTypes.func.isRequired,
     startDragging: PropTypes.func.isRequired,
     endDragging: PropTypes.func.isRequired
+  }
+
+  toImageUrl({ biome, crowns }) {
+    return `images/${biome}_${crowns}.png`
+  }
+
+  leftImage() {
+    return this.toImageUrl(this.props.picked[0])
+  }
+
+  rightImage() {
+    return this.toImageUrl(this.props.picked[1])
   }
 
   render() {
@@ -42,13 +55,13 @@ class Domino extends Component {
         <Sprite
           width={width / 2}
           height={height}
-          texture={PIXI.Texture.fromImage('images/FIELD_0.png')}
+          texture={PIXI.Texture.fromImage(this.leftImage())}
         />
         <Sprite
           width={width / 2}
           height={height}
           x={width / 2}
-          texture={PIXI.Texture.fromImage('images/FIELD_1.png')}
+          texture={PIXI.Texture.fromImage(this.rightImage())}
         />
       </Container>
     )
