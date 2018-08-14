@@ -5,6 +5,8 @@ import getBoard from './getBoard'
 const domino = stack[0]
 const overlappingCastle = { dir: 0, x: 0, y: 0, domino }
 const gapFromCastle = { dir: 0, x: 2, y: 0, domino }
+const rotated3below = { dir: 3, x: 0, y: 2, domino }
+const rotated1below = { dir: 1, x: 0, y: 1, domino }
 const validPlacements = [
   { dir: 0, x: 1, y: 0, domino },
   { dir: 0, x: 3, y: 0, domino: stack[1] },
@@ -32,6 +34,14 @@ describe('isValid', () => {
 
   it('returns false if gap between placement and other cards', () => {
     expect(isValid([gapFromCastle])).toEqual(false)
+  })
+
+  it('returns true if for rotated one step pieces below castle', () => {
+    expect(isValid([rotated1below])).toEqual(true)
+  })
+
+  it('returns true if for rotated three steps pieces below castle', () => {
+    expect(isValid([rotated3below])).toEqual(true)
   })
 
   it('returns false unless surrounding has same biome or castle', () => {

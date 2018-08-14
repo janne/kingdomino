@@ -19,9 +19,9 @@ describe('getBoard', () => {
 
   it('returns the board for a valid placement', () => {
     expect(getBoard([validPlacements[0]])).toEqual([
-      { x: 0, y: 0, crowns: 0, biome: 'Castle' },
-      { x: 1, y: 0, crowns: 0, biome: 'Field' },
-      { x: 2, y: 0, crowns: 0, biome: 'Field' }
+      { x: 0, y: 0, crowns: 0, biome: 'CASTLE' },
+      { x: 1, y: 0, crowns: 0, biome: 'FIELD' },
+      { x: 2, y: 0, crowns: 0, biome: 'FIELD' }
     ])
   })
 
