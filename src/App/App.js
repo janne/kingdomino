@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Stage, Container } from 'react-pixi-fiber'
 import Board from '../Board'
 import Picked from '../Picked'
+import Domino from '../Domino'
 
 class App extends Component {
   static propTypes = {
@@ -35,11 +36,19 @@ class App extends Component {
   }
 
   render() {
-    const { width, height } = this.props
+    const { width, height, placements } = this.props
     if (width < 100 || height < 100) return null
 
     const boardSide = this.min(width, height) - this.PADDING
     const dominoSide = boardSide / this.GRID_SIZE
+    const renderDomino = placement => (
+      <Domino
+        width={2 * dominoSide}
+        height={dominoSide}
+        placement={placement}
+      />
+    )
+    const dominos = placements.map(renderDomino)
 
     return (
       <Stage
@@ -50,6 +59,7 @@ class App extends Component {
         <Container x={width / 2 - boardSide / 2} y={height / 2 - boardSide / 2}>
           <Board width={boardSide} height={boardSide} />
           <Picked width={2 * dominoSide} height={dominoSide} />
+          {dominos}
         </Container>
       </Stage>
     )

@@ -3,8 +3,8 @@ import App from './App'
 import { resize, moveTo } from '../store'
 
 const mapStateToProps = state => {
-  const { width, height } = state
-  return { width, height }
+  const { width, height, placements } = state
+  return { width, height, placements }
 }
 const mapDispatchToProps = dispatch => {
   return {

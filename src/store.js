@@ -9,10 +9,14 @@ const MOVE_TO = 'move_to'
 const initialState = {
   width: 0,
   height: 0,
-  picked: stack[0],
-  deck: stack.slice(1),
-  rotation: 0,
+  placements: [
+    { x: 1, y: 0, dir: 0, domino: stack[1] },
+    { x: -2, y: 0, dir: 0, domino: stack[0] }
+  ],
+  deck: stack.slice(3),
   dragging: false,
+  picked: stack[2],
+  rotation: 0,
   pos: { x: 0, y: 0 }
 }
 
