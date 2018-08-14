@@ -21,7 +21,8 @@ class Picked extends Component {
     dragging: PropTypes.bool.isRequired,
     rotate: PropTypes.func.isRequired,
     startDragging: PropTypes.func.isRequired,
-    endDragging: PropTypes.func.isRequired
+    endDragging: PropTypes.func.isRequired,
+    placements: PropTypes.arrayOf(PropTypes.object).isRequired
   }
 
   toImageUrl({ biome, crowns }) {
@@ -83,7 +84,7 @@ class Picked extends Component {
     this.props.endDragging()
 
     const dominoLength = this.refs.container.height
-    const { pos, previousPos, rotation } = this.props
+    const { pos, previousPos, rotation, placements } = this.props
 
     if (previousPos.x === pos.x && previousPos.y === pos.y) {
       this.props.rotate()
@@ -101,7 +102,7 @@ class Picked extends Component {
       domino: this.props.domino
     }
 
-    if (isValid([placement])) {
+    if (isValid([...placements, placement])) {
       const newPos = {
         x: xPos * dominoLength + dominoLength / 2 + (h ? dominoLength / 2 : 0),
         y: yPos * dominoLength + dominoLength / 2 + (h ? 0 : dominoLength / 2)

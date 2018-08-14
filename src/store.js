@@ -15,7 +15,7 @@ const initialState = {
   ],
   deck: stack.slice(3),
   dragging: false,
-  picked: stack[2],
+  picked: stack[4],
   rotation: 0,
   pos: { x: 0, y: 0 }
 }

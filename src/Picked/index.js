@@ -3,8 +3,8 @@ import Picked from './Picked'
 import { rotate, startDragging, endDragging, moveTo } from '../store'
 
 const mapStateToProps = state => {
-  const { rotation, dragging, pos, previousPos, picked } = state
-  return { rotation, dragging, pos, previousPos, domino: picked }
+  const { rotation, dragging, pos, previousPos, picked, placements } = state
+  return { rotation, dragging, pos, previousPos, domino: picked, placements }
 }
 
 const mapDispatchToProps = dispatch => ({
