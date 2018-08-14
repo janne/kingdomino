@@ -10,7 +10,7 @@ const initialState = {
   width: 0,
   height: 0,
   placements: [
-    { x: 1, y: 0, dir: 0, domino: stack[1] },
+    { x: 1, y: 0, dir: 1, domino: stack[1] },
     { x: -2, y: 0, dir: 0, domino: stack[0] }
   ],
   deck: stack.slice(3),

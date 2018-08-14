@@ -27,25 +27,32 @@ class Domino extends Component {
     return this.toImageUrl(this.props.placement.domino[1])
   }
 
-  render() {
-    const { width, height, placement } = this.props
-    const containerProps = {
-      x: (placement.x + 4) * height,
-      y: (placement.y + 4) * height,
-      rotation: placement.dir * (Math.PI / 2)
-    }
-    const renderSprite = (url, x = 0) => (
+  renderSprite(url, x = 0) {
+    return (
       <Sprite
-        width={width / 2}
-        height={height}
+        width={this.props.width / 2}
+        height={this.props.height}
         x={x}
         texture={PIXI.Texture.fromImage(url)}
       />
     )
+  }
+
+  render() {
+    const { width, height, placement } = this.props
+    const h = placement.dir % 2 === 0
+    const xPos = placement.x + 4 - (placement.dir === 2 ? 1 : 0)
+    const yPos = placement.y + 4 - (placement.dir === 3 ? 1 : 0)
+    const containerProps = {
+      x: xPos * height + height / 2 + (h ? height / 2 : 0),
+      y: yPos * height + height / 2 + (h ? 0 : height / 2),
+      rotation: placement.dir * (Math.PI / 2),
+      pivot: new PIXI.Point(width / 2, height / 2)
+    }
     return (
       <Container {...containerProps}>
-        {renderSprite(this.leftImage())}
-        {renderSprite(this.rightImage(), width / 2)}
+        {this.renderSprite(this.leftImage())}
+        {this.renderSprite(this.rightImage(), width / 2)}
       </Container>
     )
   }
