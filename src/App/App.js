@@ -41,11 +41,12 @@ class App extends Component {
 
     const boardSide = this.min(width, height) - this.PADDING
     const dominoSide = boardSide / this.GRID_SIZE
-    const renderDomino = placement => (
+    const renderDomino = (placement, index) => (
       <Domino
         width={2 * dominoSide}
         height={dominoSide}
         placement={placement}
+        key={index}
       />
     )
     const dominos = placements.map(renderDomino)
