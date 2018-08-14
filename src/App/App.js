@@ -15,9 +15,10 @@ class App extends Component {
   GRID_SIZE = 9
 
   dominoStartPos() {
-    const side = this.min(window.innerHeight, window.innerHeight) - this.PADDING
-    const domino = side / this.GRID_SIZE
-    return { x: side + 2 * domino, y: side / 2 }
+    const boardSide =
+      this.min(window.innerHeight, window.innerHeight) - this.PADDING
+    const dominoSide = boardSide / this.GRID_SIZE
+    return { x: boardSide + 2 * dominoSide, y: boardSide / 2 }
   }
 
   componentDidMount() {
@@ -37,8 +38,8 @@ class App extends Component {
     const { width, height } = this.props
     if (width < 100 || height < 100) return null
 
-    const side = this.min(width, height) - this.PADDING
-    const domino = side / this.GRID_SIZE
+    const boardSide = this.min(width, height) - this.PADDING
+    const dominoSide = boardSide / this.GRID_SIZE
 
     return (
       <Stage
@@ -46,9 +47,9 @@ class App extends Component {
         width={width}
         height={height}
       >
-        <Container x={width / 2 - side / 2} y={height / 2 - side / 2}>
-          <Board width={side} height={side} />
-          <Domino width={2 * domino} height={domino} />
+        <Container x={width / 2 - boardSide / 2} y={height / 2 - boardSide / 2}>
+          <Board width={boardSide} height={boardSide} />
+          <Domino width={2 * dominoSide} height={dominoSide} />
         </Container>
       </Stage>
     )
