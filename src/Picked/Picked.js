@@ -14,7 +14,7 @@ class Picked extends Component {
       x: PropTypes.number,
       y: PropTypes.number
     }),
-    picked: PropTypes.arrayOf(PropTypes.object).isRequired,
+    domino: PropTypes.arrayOf(PropTypes.object).isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     rotation: PropTypes.number.isRequired,
@@ -29,11 +29,11 @@ class Picked extends Component {
   }
 
   leftImage() {
-    return this.toImageUrl(this.props.picked[0])
+    return this.toImageUrl(this.props.domino[0])
   }
 
   rightImage() {
-    return this.toImageUrl(this.props.picked[1])
+    return this.toImageUrl(this.props.domino[1])
   }
 
   render() {
@@ -98,7 +98,7 @@ class Picked extends Component {
       x: xPos - 4 + (rotation === 2 ? 1 : 0),
       y: yPos - 4 + (rotation === 3 ? 1 : 0),
       dir: rotation,
-      domino: this.props.picked
+      domino: this.props.domino
     }
 
     if (isValid([placement])) {
