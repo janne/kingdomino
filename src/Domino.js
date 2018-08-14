@@ -11,7 +11,7 @@ class Domino extends Component {
       x: PropTypes.number,
       y: PropTypes.number,
       dir: PropTypes.number,
-      domino: PropTypes.object
+      domino: PropTypes.array
     }).isRequired
   }
 
