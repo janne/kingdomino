@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js'
 import { Sprite, Container } from 'react-pixi-fiber'
 import isValid from '../kingdom/isValid'
 
-class Domino extends Component {
+class Picked extends Component {
   static propTypes = {
     pos: PropTypes.shape({
       x: PropTypes.number,
@@ -113,4 +113,4 @@ class Domino extends Component {
   }
 }
 
-export default Domino
+export default Picked

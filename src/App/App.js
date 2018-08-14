@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Stage, Container } from 'react-pixi-fiber'
 import Board from '../Board'
-import Domino from '../Domino'
+import Picked from '../Picked'
 
 class App extends Component {
   static propTypes = {
@@ -49,7 +49,7 @@ class App extends Component {
       >
         <Container x={width / 2 - boardSide / 2} y={height / 2 - boardSide / 2}>
           <Board width={boardSide} height={boardSide} />
-          <Domino width={2 * dominoSide} height={dominoSide} />
+          <Picked width={2 * dominoSide} height={dominoSide} />
         </Container>
       </Stage>
     )

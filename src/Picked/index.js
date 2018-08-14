@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Domino from './Domino'
+import Picked from './Picked'
 import { rotate, startDragging, endDragging, moveTo } from '../store'
 
 const mapStateToProps = state => {
@@ -17,4 +17,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Domino)
+)(Picked)
