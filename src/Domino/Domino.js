@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import * as PIXI from 'pixi.js'
 import { Sprite, Container } from 'react-pixi-fiber'
+import isValid from '../kingdom/isValid'
 
 class Domino extends Component {
   static propTypes = {
@@ -93,7 +94,14 @@ class Domino extends Component {
     const xPos = Math.floor((pos.x - (h ? dominoLength / 2 : 0)) / dominoLength)
     const yPos = Math.floor((pos.y - (h ? 0 : dominoLength / 2)) / dominoLength)
 
-    if (xPos >= 0 && yPos >= 0 && xPos < 9 && yPos < 9) {
+    const placement = {
+      x: xPos - 4,
+      y: yPos - 4,
+      dir: this.props.rotation,
+      domino: this.props.picked
+    }
+
+    if (isValid([placement])) {
       const newPos = {
         x: xPos * dominoLength + dominoLength / 2 + (h ? dominoLength / 2 : 0),
         y: yPos * dominoLength + dominoLength / 2 + (h ? 0 : dominoLength / 2)
