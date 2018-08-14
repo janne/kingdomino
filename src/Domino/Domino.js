@@ -83,21 +83,21 @@ class Domino extends Component {
     this.props.endDragging()
 
     const dominoLength = this.refs.container.height
-    const { pos, previousPos } = this.props
+    const { pos, previousPos, rotation } = this.props
 
     if (previousPos.x === pos.x && previousPos.y === pos.y) {
       this.props.rotate()
     }
 
-    const h = this.props.rotation % 2 === 0
+    const h = rotation % 2 === 0
 
     const xPos = Math.floor((pos.x - (h ? dominoLength / 2 : 0)) / dominoLength)
     const yPos = Math.floor((pos.y - (h ? 0 : dominoLength / 2)) / dominoLength)
 
     const placement = {
-      x: xPos - 4,
-      y: yPos - 4,
-      dir: this.props.rotation,
+      x: xPos - 4 + (rotation === 2 ? 1 : 0),
+      y: yPos - 4 + (rotation === 3 ? 1 : 0),
+      dir: rotation,
       domino: this.props.picked
     }
 
