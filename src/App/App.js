@@ -41,14 +41,24 @@ class App extends Component {
 
     const boardSide = this.min(width, height) - this.PADDING
     const dominoSide = boardSide / this.GRID_SIZE
-    const renderDomino = (placement, index) => (
-      <Domino
-        width={2 * dominoSide}
-        height={dominoSide}
-        placement={placement}
-        key={index}
-      />
-    )
+    const renderDomino = (placement, index) => {
+      const h = placement.dir % 2 === 0
+      const xPos = placement.x + 4 - (placement.dir === 2 ? 1 : 0)
+      const yPos = placement.y + 4 - (placement.dir === 3 ? 1 : 0)
+      const x = xPos * dominoSide + dominoSide / 2 + (h ? dominoSide / 2 : 0)
+      const y = yPos * dominoSide + dominoSide / 2 + (h ? 0 : dominoSide / 2)
+      return (
+        <Domino
+          width={2 * dominoSide}
+          height={dominoSide}
+          x={x}
+          y={y}
+          dir={placement.dir}
+          domino={placement.domino}
+          key={index}
+        />
+      )
+    }
     const dominos = placements.map(renderDomino)
 
     return (
