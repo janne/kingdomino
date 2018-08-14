@@ -1,12 +1,17 @@
 import { connect } from 'react-redux'
 import Domino from './Domino'
-import { rotate } from '../store'
+import { rotate, startDragging, endDragging, moveTo } from '../store'
 
 const mapStateToProps = state => {
-  return { rotation: state.rotation }
+  const { rotation, dragging, pos, previousPos } = state
+  return { rotation, dragging, pos, previousPos }
 }
+
 const mapDispatchToProps = dispatch => ({
-  rotate: () => dispatch(rotate())
+  rotate: () => dispatch(rotate()),
+  startDragging: previousPos => dispatch(startDragging(previousPos)),
+  endDragging: () => dispatch(endDragging()),
+  moveTo: pos => dispatch(moveTo(pos))
 })
 
 export default connect(

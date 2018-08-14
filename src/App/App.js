@@ -7,7 +7,17 @@ import Domino from '../Domino'
 class App extends Component {
   static propTypes = {
     width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired
+    height: PropTypes.number.isRequired,
+    moveTo: PropTypes.func.isRequired
+  }
+
+  PADDING = 20
+  GRID_SIZE = 9
+
+  dominoStartPos() {
+    const side = this.min(window.innerHeight, window.innerHeight) - this.PADDING
+    const domino = side / this.GRID_SIZE
+    return { x: side + 2 * domino, y: side / 2 }
   }
 
   componentDidMount() {
@@ -15,30 +25,29 @@ class App extends Component {
     window.addEventListener('resize', () =>
       this.props.resize(window.innerWidth, window.innerHeight)
     )
+    this.props.moveTo(this.dominoStartPos())
+  }
+
+  min(a, b) {
+    return a < b ? a : b
   }
 
   render() {
     const { width, height } = this.props
     if (width < 100 || height < 100) return null
-    const sideLength = (height < width ? height : width) - 40
-    const dominoLength = sideLength / 9
+
+    const side = this.min(width, height) - this.PADDING
+    const domino = side / this.GRID_SIZE
+
     return (
       <Stage
         options={{ backgroundColor: 0xffffff }}
         width={width}
         height={height}
       >
-        <Container
-          x={width / 2 - sideLength / 2}
-          y={height / 2 - sideLength / 2}
-        >
-          <Board width={sideLength} height={sideLength} />
-          <Domino
-            width={2 * dominoLength}
-            height={dominoLength}
-            x={sideLength + 2 * dominoLength}
-            y={sideLength / 2}
-          />
+        <Container x={width / 2 - side / 2} y={height / 2 - side / 2}>
+          <Board width={side} height={side} />
+          <Domino width={2 * domino} height={domino} />
         </Container>
       </Stage>
     )

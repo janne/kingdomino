@@ -5,27 +5,38 @@ import { Sprite, Container } from 'react-pixi-fiber'
 
 class Domino extends Component {
   static propTypes = {
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
+    pos: PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number
+    }).isRequired,
+    previousPos: PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number
+    }),
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     rotation: PropTypes.number.isRequired,
-    rotate: PropTypes.func.isRequired
+    dragging: PropTypes.bool.isRequired,
+    rotate: PropTypes.func.isRequired,
+    startDragging: PropTypes.func.isRequired,
+    endDragging: PropTypes.func.isRequired
   }
 
   render() {
-    const { x, y, width, height } = this.props
+    const { pos, width, height, dragging } = this.props
     return (
       <Container
+        ref="container"
         pointerdown={e => this.handlePointerDown(e)}
         pointerup={e => this.handlePointerUp()}
         pointerupoutside={e => this.handlePointerUp()}
-        pointermove={e => this.handlePointerMove()}
+        pointermove={e => this.handlePointerMove(e)}
         rotation={this.props.rotation * (Math.PI / 2)}
         interactive={true}
         buttonMode={true}
-        x={x}
-        y={y}
+        alpha={dragging ? 0.5 : 1}
+        x={pos.x}
+        y={pos.y}
         pivot={new PIXI.Point(width / 2, height / 2)}
       >
         <Sprite
@@ -43,49 +54,40 @@ class Domino extends Component {
     )
   }
 
-  handlePointerDown(event) {
-    this.data = event.data
-    this.alpha = 0.5
-    this.dragging = true
-    this.previousX = this.x
-    this.previousY = this.y
+  handlePointerDown(e) {
+    this.props.startDragging({ x: e.target.x, y: e.target.y })
   }
 
-  handlePointerMove() {
-    if (this.dragging) {
-      var newPosition = this.data.getLocalPosition(this.parent)
-      this.x = newPosition.x
-      this.y = newPosition.y
+  handlePointerMove(e) {
+    if (this.props.dragging) {
+      const { x, y } = e.data.getLocalPosition(this.refs.container.parent)
+      this.props.moveTo({ x, y })
     }
   }
 
   handlePointerUp() {
-    this.alpha = 1
-    this.dragging = false
-    this.data = null
+    this.props.endDragging()
 
-    const dominoLength = this.height
+    const dominoLength = this.refs.container.height
+    const { pos, previousPos } = this.props
 
-    if (this.previousX === this.x && this.previousY === this.y) {
+    if (previousPos.x === pos.x && previousPos.y === pos.y) {
       this.props.rotate()
     }
 
-    const h = this.rotation === 0 || this.rotation === Math.PI
+    const h = this.props.rotation % 2 === 0
 
-    const xPos = Math.floor(
-      (this.x - (h ? dominoLength / 2 : 0)) / dominoLength
-    )
-    const yPos = Math.floor(
-      (this.y - (h ? 0 : dominoLength / 2)) / dominoLength
-    )
+    const xPos = Math.floor((pos.x - (h ? dominoLength / 2 : 0)) / dominoLength)
+    const yPos = Math.floor((pos.y - (h ? 0 : dominoLength / 2)) / dominoLength)
+
     if (xPos >= 0 && yPos >= 0 && xPos < 9 && yPos < 9) {
-      this.x =
-        xPos * dominoLength + dominoLength / 2 + (h ? dominoLength / 2 : 0)
-      this.y =
-        yPos * dominoLength + dominoLength / 2 + (h ? 0 : dominoLength / 2)
+      const newPos = {
+        x: xPos * dominoLength + dominoLength / 2 + (h ? dominoLength / 2 : 0),
+        y: yPos * dominoLength + dominoLength / 2 + (h ? 0 : dominoLength / 2)
+      }
+      this.props.moveTo(newPos)
     } else {
-      this.x = this.previousX
-      this.y = this.previousY
+      this.props.moveTo(previousPos)
     }
   }
 }
