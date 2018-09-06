@@ -24,6 +24,15 @@ api.get('/init', (req, res) =>
   res.json(R.pick(['placements', 'picked'], gameState))
 )
 
+api.post('/place', (req, res) => {
+  const pos = R.map(parseInt, R.pick(['x', 'y', 'dir'], req.body))
+
+  const { placements, picked } = gameState
+  const placement = { ...pos, domino: picked }
+  const ok = isValid([...placements, placement])
+  res.send({ ok })
+})
+
 app.use('/api', api)
 
 app.listen(3001, () => console.log('Server running at http://localhost:3001/'))
