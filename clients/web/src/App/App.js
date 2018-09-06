@@ -37,8 +37,6 @@ class App extends Component {
 
   render() {
     const { width, height, placements, picked } = this.props
-    console.log('PICKED', picked)
-    console.log('PLACEMENTS', placements)
     if (width < 100 || height < 100) return null
 
     const boardSide = this.min(width, height) - this.PADDING
