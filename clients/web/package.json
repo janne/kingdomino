@@ -2,6 +2,7 @@
   "name": "kingdomino",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001/",
   "dependencies": {
     "pixi.js": "^4.8.1",
     "ramda": "^0.25.0",

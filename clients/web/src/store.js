@@ -3,6 +3,7 @@ const ROTATE = 'rotate'
 const START_DRAGGING = 'start_dragging'
 const END_DRAGGING = 'end_dragging'
 const MOVE_TO = 'move_to'
+const UPDATE_BOARD = 'update_board'
 
 const initialState = {
   width: 0,
@@ -32,12 +33,27 @@ export const reducers = (state = initialState, action) => {
     case MOVE_TO:
       const { pos } = action
       return { ...state, pos }
+    case UPDATE_BOARD:
+      const { placements, picked } = action
+      return { ...state, picked, placements }
     default:
       return state
   }
 }
 
 // Action creators //
+
+export const updateBoard = ({ placements, picked }) => ({
+  type: UPDATE_BOARD,
+  placements,
+  picked
+})
+
+export const init = () => dispatch => {
+  return fetch('/api/init', { accept: 'application/json' })
+    .then(resp => resp.json())
+    .then(board => dispatch(updateBoard(board)))
+}
 
 export const resize = (width, height) => ({
   type: RESIZE_WINDOW,

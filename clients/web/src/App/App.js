@@ -36,7 +36,9 @@ class App extends Component {
   }
 
   render() {
-    const { width, height, placements } = this.props
+    const { width, height, placements, picked } = this.props
+    console.log('PICKED', picked)
+    console.log('PLACEMENTS', placements)
     if (width < 100 || height < 100) return null
 
     const boardSide = this.min(width, height) - this.PADDING
@@ -69,7 +71,7 @@ class App extends Component {
       >
         <Container x={width / 2 - boardSide / 2} y={height / 2 - boardSide / 2}>
           <Board width={boardSide} height={boardSide} />
-          <Picked width={2 * dominoSide} height={dominoSide} />
+          {picked && <Picked width={2 * dominoSide} height={dominoSide} />}
           {dominos}
         </Container>
       </Stage>

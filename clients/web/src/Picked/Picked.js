@@ -25,7 +25,7 @@ class Picked extends Component {
   }
 
   toImageUrl({ biome, crowns }) {
-    return `images/${biome}_${crowns}.png`
+    return `/images/${biome}_${crowns}.png`
   }
 
   leftImage() {
@@ -37,8 +37,7 @@ class Picked extends Component {
   }
 
   render() {
-    const { pos, width, height, dragging, dir, domino } = this.props
-    if (!domino) return null
+    const { pos, width, height, dragging, dir } = this.props
     return (
       <Container
         ref="container"

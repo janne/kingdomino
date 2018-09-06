@@ -14,7 +14,7 @@ class Domino extends Component {
   }
 
   toImageUrl({ biome, crowns }) {
-    return `images/${biome}_${crowns}.png`
+    return `/images/${biome}_${crowns}.png`
   }
 
   leftImage() {
