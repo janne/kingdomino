@@ -7,7 +7,7 @@ import isValid from './isValid'
 import stack from './stack'
 
 const app = express()
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.json())
 
 const gameState = {
   placements: [
@@ -24,7 +24,7 @@ api.get('/init', (req, res) =>
   res.json(R.pick(['placements', 'picked'], gameState))
 )
 
-api.post('/place', (req, res) => {
+api.post('/validate', (req, res) => {
   const pos = R.map(parseInt, R.pick(['x', 'y', 'dir'], req.body))
 
   const { placements, picked } = gameState

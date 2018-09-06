@@ -83,7 +83,7 @@ class Picked extends Component {
     this.props.endDragging()
 
     const dominoLength = this.refs.container.height
-    const { pos, previousPos, dir, placements, domino } = this.props
+    const { pos, previousPos, dir } = this.props
 
     if (previousPos.x === pos.x && previousPos.y === pos.y) {
       this.props.rotate()
@@ -97,21 +97,14 @@ class Picked extends Component {
     const placement = {
       x: xPos - 4 + (dir === 2 ? 1 : 0),
       y: yPos - 4 + (dir === 3 ? 1 : 0),
-      dir,
-      domino
+      dir
     }
 
-    const isValid = () => false
-
-    if (isValid([...placements, placement])) {
-      const newPos = {
-        x: xPos * dominoLength + dominoLength / 2 + (h ? dominoLength / 2 : 0),
-        y: yPos * dominoLength + dominoLength / 2 + (h ? 0 : dominoLength / 2)
-      }
-      this.props.moveTo(newPos)
-    } else {
-      this.props.moveTo(previousPos)
+    const newPos = {
+      x: xPos * dominoLength + dominoLength / 2 + (h ? dominoLength / 2 : 0),
+      y: yPos * dominoLength + dominoLength / 2 + (h ? 0 : dominoLength / 2)
     }
+    this.props.attemptPlacement(placement, newPos, previousPos)
   }
 }
 

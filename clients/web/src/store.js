@@ -55,6 +55,18 @@ export const init = () => dispatch => {
     .then(board => dispatch(updateBoard(board)))
 }
 
+export const attemptPlacement = (placement, newPos, oldPos) => dispatch => {
+  return fetch('/api/validate', {
+    body: JSON.stringify(placement),
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=utf-8' }
+  })
+    .then(resp => resp.json())
+    .then(
+      ({ ok }) => (ok ? dispatch(moveTo(newPos)) : dispatch(moveTo(oldPos)))
+    )
+}
+
 export const resize = (width, height) => ({
   type: RESIZE_WINDOW,
   width,
