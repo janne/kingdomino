@@ -1,0 +1,11 @@
+{
+  "name": "kingdomino",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently 'cd clients/web && npm start' 'cd server && npm start'"
+  },
+  "dependencies": {
+    "concurrently": "^4.0.1"
+  }
+}
