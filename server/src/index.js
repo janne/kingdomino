@@ -1,13 +1,10 @@
-import http from 'http'
+import express from 'express'
 import getBoard from './getBoard'
 import getPoints from './getPoints'
 import isValid from './isValid'
 
-http
-  .createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' })
-    res.end('Hello, World!!!\n')
-  })
-  .listen(3001, 'localhost')
+const app = express()
 
-console.log('Server running at http://localhost:3001/')
+app.get('/', (req, res) => res.send('Hello, World!'))
+
+app.listen(3001, () => console.log('Server running at http://localhost:3001/'))

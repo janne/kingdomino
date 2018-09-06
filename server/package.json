@@ -15,5 +15,8 @@
     "build": "babel src -d dist",
     "serve": "node dist/index.js",
     "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
   }
 }
