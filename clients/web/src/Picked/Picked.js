@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import * as PIXI from 'pixi.js'
 import { Sprite, Container } from 'react-pixi-fiber'
-import isValid from '../kingdom/isValid'
 
 class Picked extends Component {
   static propTypes = {
@@ -38,7 +37,8 @@ class Picked extends Component {
   }
 
   render() {
-    const { pos, width, height, dragging, dir } = this.props
+    const { pos, width, height, dragging, dir, domino } = this.props
+    if (!domino) return null
     return (
       <Container
         ref="container"
@@ -101,6 +101,8 @@ class Picked extends Component {
       dir,
       domino
     }
+
+    const isValid = () => false
 
     if (isValid([...placements, placement])) {
       const newPos = {

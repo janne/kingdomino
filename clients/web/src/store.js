@@ -1,5 +1,3 @@
-import stack from './kingdom/stack'
-
 const RESIZE_WINDOW = 'resize_window'
 const ROTATE = 'rotate'
 const START_DRAGGING = 'start_dragging'
@@ -9,14 +7,10 @@ const MOVE_TO = 'move_to'
 const initialState = {
   width: 0,
   height: 0,
-  placements: [
-    { x: 1, y: 0, dir: 1, domino: stack[1] },
-    { x: -2, y: 0, dir: 0, domino: stack[0] }
-  ],
-  deck: stack.slice(3),
   dragging: false,
-  picked: stack[4],
   dir: 0,
+  placements: [],
+  picked: null,
   pos: { x: 0, y: 0 }
 }
 
