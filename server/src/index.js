@@ -1,13 +1,28 @@
 import express from 'express'
+import R from 'ramda'
 import bodyParser from 'body-parser'
 import getBoard from './getBoard'
 import getPoints from './getPoints'
 import isValid from './isValid'
+import stack from './stack'
 
 const app = express()
 app.use(bodyParser.urlencoded())
 
+const gameState = {
+  placements: [
+    { x: 1, y: 0, dir: 1, domino: stack[1] },
+    { x: -2, y: 0, dir: 0, domino: stack[0] }
+  ],
+  deck: stack.slice(3),
+  picked: stack[4]
+}
+
 const api = new express.Router()
+
+api.get('/init', (req, res) =>
+  res.json(R.pick(['placements', 'picked'], gameState))
+)
 
 app.use('/api', api)
 
