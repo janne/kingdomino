@@ -3,7 +3,6 @@ import R from 'ramda'
 import bodyParser from 'body-parser'
 import getBoard from './getBoard'
 import getPoints from './getPoints'
-import isValid from './isValid'
 import stack from './stack'
 import Client from './clients/redis'
 
@@ -32,7 +31,7 @@ api.post('/validate', (req, res) => {
 
   const { placements, picked } = gameState
   const placement = { ...pos, domino: picked }
-  const ok = isValid([...placements, placement])
+  const ok = getBoard([...placements, placement]) !== null
   res.send({ ok })
 })
 

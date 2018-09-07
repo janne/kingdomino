@@ -22,7 +22,7 @@ const getSurroundingLands = (aroundPos, board) =>
   R.filter(f => !!f, getSurroundings(aroundPos).map(getLand(board)))
 
 const getBoard = (
-  placements,
+  placements = [],
   initialBoard = [{ x: 0, y: 0, biome: CASTLE_BIOME, crowns: 0 }]
 ) =>
   placements.reduce((board, placement) => {
