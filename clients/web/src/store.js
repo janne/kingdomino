@@ -53,6 +53,7 @@ export const init = () => dispatch => {
   return fetch('/api/init', { accept: 'application/json' })
     .then(resp => resp.json())
     .then(board => dispatch(updateBoard(board)))
+    .catch(error => console.log(error))
 }
 
 export const attemptPlacement = (placement, newPos, oldPos) => dispatch => {
