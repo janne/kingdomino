@@ -5,6 +5,7 @@ import getBoard from './getBoard'
 import getPoints from './getPoints'
 import isValid from './isValid'
 import stack from './stack'
+import Client from './clients/redis'
 
 const app = express()
 app.use(bodyParser.json())
@@ -20,9 +21,11 @@ const gameState = {
 
 const api = new express.Router()
 
-api.get('/init', (req, res) =>
+api.get('/init', (req, res) => {
+  const client = new Client()
+  client.set(gameState)
   res.json(R.pick(['placements', 'picked'], gameState))
-)
+})
 
 api.post('/validate', (req, res) => {
   const pos = R.map(parseInt, R.pick(['x', 'y', 'dir'], req.body))
