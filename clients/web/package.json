@@ -4,10 +4,10 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
-    "pixi.js": "^4.8.1",
+    "pixi.js": "^4.8.2",
     "ramda": "^0.25.0",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
     "react-pixi-fiber": "^0.4.9",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
