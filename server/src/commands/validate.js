@@ -1,5 +1,6 @@
 import R from 'ramda'
 import getBoard from '../getBoard'
+import getPoints from '../getPoints'
 
 export default ({ client }) => (req, res) => {
   client
@@ -10,6 +11,8 @@ export default ({ client }) => (req, res) => {
       const newPlacements = [...placements, { ...pos, domino: picked }]
       const ok = getBoard(newPlacements) !== null
       const newPicked = state.deck.pop()
+      const points = getPoints(newPlacements)
+
       if (ok) {
         client.setState({
           ...state,
@@ -17,7 +20,8 @@ export default ({ client }) => (req, res) => {
           picked: newPicked
         })
       }
-      res.send({ ok, placements: newPlacements, picked: newPicked })
+
+      res.send({ ok, placements: newPlacements, picked: newPicked, points })
     })
     .catch(error => res.send({ ok: false, error }))
 }

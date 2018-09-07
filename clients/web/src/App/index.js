@@ -1,11 +1,16 @@
 import { connect } from 'react-redux'
+import { pick } from 'ramda'
 import App from './App'
 import { resize, moveTo } from '../store'
 
-const mapStateToProps = state => {
-  const { width, height, placements, picked } = state
-  return { width, height, placements, picked }
-}
+const mapStateToProps = pick([
+  'width',
+  'height',
+  'placements',
+  'picked',
+  'points'
+])
+
 const mapDispatchToProps = dispatch => {
   return {
     resize: (width, height) => dispatch(resize(width, height)),

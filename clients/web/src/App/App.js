@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Stage, Container } from 'react-pixi-fiber'
+import { Stage, Container, Text } from 'react-pixi-fiber'
 import Board from '../Board'
 import Picked from '../Picked'
 import Domino from '../Domino'
@@ -36,7 +36,8 @@ class App extends Component {
   }
 
   render() {
-    const { width, height, placements, picked } = this.props
+    const { width, height, placements, picked, points } = this.props
+
     if (width < 100 || height < 100) return null
 
     const boardSide = this.min(width, height) - this.PADDING
@@ -61,6 +62,7 @@ class App extends Component {
     }
     const dominos = placements.map(renderDomino)
 
+    const score = `Points: ${points || 0}`
     return (
       <Stage
         options={{ backgroundColor: 0xffffff }}
@@ -72,6 +74,7 @@ class App extends Component {
           {picked && <Picked width={2 * dominoSide} height={dominoSide} />}
           {dominos}
         </Container>
+        <Text text={score} x={20} y={20} />
       </Stage>
     )
   }
