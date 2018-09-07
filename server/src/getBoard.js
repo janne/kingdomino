@@ -1,4 +1,4 @@
-import { equals, filter, none, eqProps, concat } from 'ramda'
+import R from 'ramda'
 import { getSurroundings, getLand } from './utils'
 import { CASTLE_BIOME } from './constants'
 
@@ -19,7 +19,7 @@ const getRightPos = ({ x, y, dir }) => {
 }
 
 const getSurroundingLands = (aroundPos, board) =>
-  filter(f => !!f, getSurroundings(aroundPos).map(getLand(board)))
+  R.filter(f => !!f, getSurroundings(aroundPos).map(getLand(board)))
 
 const getBoard = (
   placements,
@@ -39,15 +39,18 @@ const getBoard = (
     const rightLand = { ...rightPos, ...placement.domino[1] }
     const rightSurroundingLands = getSurroundingLands(rightPos, board)
 
-    if (equals(leftSurroundingLands, []) && equals(rightSurroundingLands, []))
+    if (
+      R.equals(leftSurroundingLands, []) &&
+      R.equals(rightSurroundingLands, [])
+    )
       return null
 
     if (
-      none(eqProps('biome', leftLand), leftSurroundingLands) &&
-      none(eqProps('biome', rightLand), rightSurroundingLands) &&
-      none(
-        eqProps('biome', { biome: CASTLE_BIOME }),
-        concat(leftSurroundingLands, rightSurroundingLands)
+      R.none(R.eqProps('biome', leftLand), leftSurroundingLands) &&
+      R.none(R.eqProps('biome', rightLand), rightSurroundingLands) &&
+      R.none(
+        R.eqProps('biome', { biome: CASTLE_BIOME }),
+        R.concat(leftSurroundingLands, rightSurroundingLands)
       )
     )
       return null
