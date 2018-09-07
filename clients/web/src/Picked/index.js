@@ -1,12 +1,6 @@
 import { connect } from 'react-redux'
 import Picked from './Picked'
-import {
-  rotate,
-  startDragging,
-  endDragging,
-  moveTo,
-  attemptPlacement
-} from '../store'
+import { rotate, startDragging, endDragging, moveTo, place } from '../store'
 
 const mapStateToProps = state => {
   const { dir, dragging, pos, previousPos, picked, placements } = state
@@ -18,8 +12,8 @@ const mapDispatchToProps = dispatch => ({
   startDragging: previousPos => dispatch(startDragging(previousPos)),
   endDragging: () => dispatch(endDragging()),
   moveTo: pos => dispatch(moveTo(pos)),
-  attemptPlacement: (placement, newPos, oldPos) =>
-    dispatch(attemptPlacement(placement, newPos, oldPos))
+  place: (placement, newPos, oldPos) =>
+    dispatch(place(placement, newPos, oldPos))
 })
 
 export default connect(

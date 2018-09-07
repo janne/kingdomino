@@ -65,8 +65,8 @@ export const init = () => dispatch => {
     .catch(error => console.log(error))
 }
 
-export const attemptPlacement = placement => dispatch => {
-  return fetch('/api/validate', {
+export const place = placement => dispatch => {
+  return fetch('/api/place', {
     body: JSON.stringify(placement),
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=utf-8' }

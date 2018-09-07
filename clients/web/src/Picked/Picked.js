@@ -105,7 +105,7 @@ class Picked extends Component {
       x: xPos * dominoLength + dominoLength / 2 + (h ? dominoLength / 2 : 0),
       y: yPos * dominoLength + dominoLength / 2 + (h ? 0 : dominoLength / 2)
     }
-    this.props.attemptPlacement(placement, newPos, previousPos)
+    this.props.place(placement, newPos, previousPos)
   }
 }
 
