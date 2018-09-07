@@ -1,7 +1,7 @@
 import R from 'ramda'
 import stack from '../stack'
 
-const gameState = {
+const initialState = {
   placements: [
     { x: 1, y: 0, dir: 1, domino: stack[1] },
     { x: -2, y: 0, dir: 0, domino: stack[0] }
@@ -11,6 +11,6 @@ const gameState = {
 }
 
 export default ({ client }) => (req, res) => {
-  client.setState(gameState)
-  res.json(R.pick(['placements', 'picked'], gameState))
+  client.setState(initialState)
+  res.json(R.pick(['placements', 'picked'], initialState))
 }
