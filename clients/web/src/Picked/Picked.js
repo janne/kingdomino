@@ -87,6 +87,7 @@ class Picked extends Component {
 
     if (previousPos.x === pos.x && previousPos.y === pos.y) {
       this.props.rotate()
+      return
     }
 
     const h = dir % 2 === 0
