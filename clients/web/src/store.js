@@ -4,6 +4,7 @@ const START_DRAGGING = 'start_dragging'
 const END_DRAGGING = 'end_dragging'
 const MOVE_TO = 'move_to'
 const UPDATE_BOARD = 'update_board'
+const RESET_PICKED = 'reset_picked'
 
 const initialState = {
   width: 0,
@@ -36,6 +37,8 @@ export const reducers = (state = initialState, action) => {
     case UPDATE_BOARD:
       const { placements, picked } = action
       return { ...state, picked, placements }
+    case RESET_PICKED:
+      return { ...state, dir: 0, pos: state.previousPos }
     default:
       return state
   }
@@ -49,6 +52,10 @@ export const updateBoard = ({ placements, picked }) => ({
   picked
 })
 
+export const resetPicked = () => ({
+  type: RESET_PICKED
+})
+
 export const init = () => dispatch => {
   return fetch('/api/init', { accept: 'application/json' })
     .then(resp => resp.json())
@@ -56,16 +63,17 @@ export const init = () => dispatch => {
     .catch(error => console.log(error))
 }
 
-export const attemptPlacement = (placement, newPos, oldPos) => dispatch => {
+export const attemptPlacement = placement => dispatch => {
   return fetch('/api/validate', {
     body: JSON.stringify(placement),
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=utf-8' }
   })
     .then(resp => resp.json())
-    .then(
-      ({ ok }) => (ok ? dispatch(moveTo(newPos)) : dispatch(moveTo(oldPos)))
-    )
+    .then(({ ok, placements, picked }) => {
+      if (ok) dispatch(updateBoard({ placements, picked }))
+      dispatch(resetPicked())
+    })
 }
 
 export const resize = (width, height) => ({
