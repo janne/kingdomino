@@ -1,39 +1,20 @@
 import express from 'express'
 import R from 'ramda'
 import bodyParser from 'body-parser'
-import getBoard from './getBoard'
-import getPoints from './getPoints'
-import stack from './stack'
 import Client from './clients/redis'
+import init from './commands/init'
+import validate from './commands/validate'
 
 const app = express()
 app.use(bodyParser.json())
 
-const gameState = {
-  placements: [
-    { x: 1, y: 0, dir: 1, domino: stack[1] },
-    { x: -2, y: 0, dir: 0, domino: stack[0] }
-  ],
-  deck: stack.slice(3),
-  picked: stack[4]
-}
+const resources = { client: new Client() }
 
 const api = new express.Router()
 
-api.get('/init', (req, res) => {
-  const client = new Client()
-  client.set(gameState)
-  res.json(R.pick(['placements', 'picked'], gameState))
-})
+api.get('/init', init(resources))
 
-api.post('/validate', (req, res) => {
-  const pos = R.map(parseInt, R.pick(['x', 'y', 'dir'], req.body))
-
-  const { placements, picked } = gameState
-  const placement = { ...pos, domino: picked }
-  const ok = getBoard([...placements, placement]) !== null
-  res.send({ ok })
-})
+api.post('/validate', validate(resources))
 
 app.use('/api', api)
 
