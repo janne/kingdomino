@@ -5,12 +5,12 @@ class Client {
     this.client = new Redis()
   }
 
-  get() {
-    return this.client.get('world')
+  getState() {
+    return this.client.get('world').then(json => JSON.parse(json))
   }
 
-  set(world) {
-    this.client.set('world', world)
+  setState(state) {
+    this.client.set('world', JSON.stringify(state))
   }
 }
 
