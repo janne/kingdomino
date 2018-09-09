@@ -1,20 +1,20 @@
 import R from 'ramda'
 import getBoard from './getBoard'
-import stack from './stack'
+import dominos from './fixtures/dominos'
 
-const domino = stack[0]
+const domino = dominos[0]
 const overlappingCastle = { dir: 0, x: 0, y: 0, domino }
 const gapFromCastle = { dir: 0, x: 2, y: 0, domino }
 const validPlacements = [
   { dir: 0, x: 1, y: 0, domino },
-  { dir: 0, x: 3, y: 0, domino: stack[1] },
-  { dir: 0, x: -2, y: 0, domino: stack[2] },
-  { dir: 0, x: 3, y: 1, domino: stack[8] },
-  { dir: 0, x: -2, y: 1, domino: stack[16] }
+  { dir: 0, x: -2, y: 0, domino: dominos[1] },
+  { dir: 0, x: -1, y: -1, domino: dominos[2] },
+  { dir: 0, x: -1, y: 1, domino: dominos[3] },
+  { dir: 0, x: -1, y: -2, domino: dominos[4] }
 ]
+const extraPlacement = { dir: 0, x: -1, y: 2, domino: dominos[5] }
 const rotated3below = { dir: 3, x: 0, y: 2, domino }
 const rotated1below = { dir: 1, x: 0, y: 1, domino }
-const extraPlacement = { dir: 0, x: 0, y: -1, domino: stack[3] }
 
 describe('getBoard', () => {
   it('returns initial board for undefined', () => {
@@ -36,14 +36,14 @@ describe('getBoard', () => {
   it('returns null unless surrounding has same biome or castle', () => {
     expect(
       getBoard([
-        { dir: 0, x: 1, y: 0, domino: stack[1] },
+        { dir: 0, x: 1, y: 0, domino: dominos[1] },
         { dir: 0, x: 3, y: 0, domino }
       ])
     ).toEqual(null)
   })
 
   it('returns the board for a valid placement', () => {
-    expect(getBoard(validPlacements) === null).toEqual(false)
+    expect(getBoard() === null).toEqual(false)
   })
 
   it('returns the board for rotated one step pieces below castle', () => {

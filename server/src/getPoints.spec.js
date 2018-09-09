@@ -1,12 +1,12 @@
 import getPoints from './getPoints'
-import stack from './stack'
+import dominos from './fixtures/dominos'
 
 const board = [
-  { dir: 0, x: 1, y: 0, domino: stack[0] },
-  { dir: 0, x: 3, y: 0, domino: stack[1] },
-  { dir: 0, x: -2, y: 0, domino: stack[2] },
-  { dir: 0, x: 3, y: 1, domino: stack[8] },
-  { dir: 0, x: -2, y: 1, domino: stack[16] }
+  { dir: 0, x: 1, y: 0, domino: dominos[0] },
+  { dir: 0, x: -2, y: 0, domino: dominos[1] },
+  { dir: 0, x: -1, y: -1, domino: dominos[2] },
+  { dir: 0, x: -1, y: 1, domino: dominos[3] },
+  { dir: 0, x: -1, y: -2, domino: dominos[4] }
 ]
 
 describe('getPoints', () => {
@@ -15,6 +15,6 @@ describe('getPoints', () => {
   })
 
   it('returns correct points for valid kingdom', () => {
-    expect(getPoints(board)).toEqual(11)
+    expect(getPoints(board)).toEqual(8)
   })
 })
