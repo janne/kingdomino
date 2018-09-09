@@ -60,4 +60,30 @@ describe('getBoard', () => {
     const board2 = getBoard([extraPlacement], board)
     expect(board2.length).toEqual(13)
   })
+
+  it('has to keep within five in height and width', () => {
+    const validWidthBoard = [
+      { dir: 0, x: 1, y: 0, domino },
+      { dir: 0, x: 3, y: 0, domino }
+    ]
+    const validHeightBoard = [
+      { dir: 1, x: 0, y: 1, domino },
+      { dir: 1, x: 0, y: 3, domino }
+    ]
+    const invalidWidthBoard = [
+      { dir: 0, x: 0, y: 1, domino },
+      { dir: 0, x: 2, y: 1, domino },
+      { dir: 0, x: 4, y: 1, domino }
+    ]
+    const invalidHeightBoard = [
+      { dir: 1, x: 1, y: 0, domino },
+      { dir: 1, x: 1, y: 2, domino },
+      { dir: 1, x: 1, y: 4, domino }
+    ]
+
+    expect(getBoard(validWidthBoard) === null).toEqual(false)
+    expect(getBoard(validHeightBoard) === null).toEqual(false)
+    expect(getBoard(invalidWidthBoard) === null).toEqual(true)
+    expect(getBoard(invalidHeightBoard) === null).toEqual(true)
+  })
 })
