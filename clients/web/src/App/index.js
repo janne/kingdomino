@@ -8,7 +8,8 @@ const mapStateToProps = pick([
   'height',
   'placements',
   'picked',
-  'points'
+  'points',
+  'limits'
 ])
 
 const mapDispatchToProps = dispatch => {

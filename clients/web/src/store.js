@@ -14,7 +14,8 @@ const initialState = {
   placements: [],
   picked: null,
   points: 0,
-  pos: { x: 0, y: 0 }
+  pos: { x: 0, y: 0 },
+  limits: { min: { x: 0, y: 0 }, max: { x: 0, y: 0 } }
 }
 
 // Reducers //
@@ -36,8 +37,8 @@ export const reducers = (state = initialState, action) => {
       const { pos } = action
       return { ...state, pos }
     case UPDATE_BOARD:
-      const { placements, picked, points } = action
-      return { ...state, picked, placements, points }
+      const { placements, picked, points, limits } = action
+      return { ...state, picked, placements, points, limits }
     case RESET_PICKED:
       return { ...state, dir: 0, pos: state.previousPos }
     default:
@@ -47,11 +48,12 @@ export const reducers = (state = initialState, action) => {
 
 // Action creators //
 
-export const updateBoard = ({ placements, picked, points }) => ({
+export const updateBoard = ({ placements, picked, points, limits }) => ({
   type: UPDATE_BOARD,
   placements,
   picked,
-  points
+  points,
+  limits
 })
 
 export const resetPicked = () => ({
@@ -72,8 +74,8 @@ export const place = placement => dispatch => {
     headers: { 'Content-Type': 'application/json; charset=utf-8' }
   })
     .then(resp => resp.json())
-    .then(({ ok, placements, picked, points }) => {
-      if (ok) dispatch(updateBoard({ placements, picked, points }))
+    .then(({ ok, placements, picked, points, limits }) => {
+      if (ok) dispatch(updateBoard({ placements, picked, points, limits }))
       dispatch(resetPicked())
     })
 }

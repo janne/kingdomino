@@ -36,7 +36,7 @@ class App extends Component {
   }
 
   render() {
-    const { width, height, placements, picked, points } = this.props
+    const { width, height, placements, picked, points, limits } = this.props
 
     if (width < 100 || height < 100) return null
 
@@ -70,7 +70,14 @@ class App extends Component {
         height={height}
       >
         <Container x={width / 2 - boardSide / 2} y={height / 2 - boardSide / 2}>
-          <Board maxWidth={boardSide} maxHeight={boardSide} />
+          <Board
+            maxWidth={boardSide}
+            maxHeight={boardSide}
+            minX={limits.min.x}
+            maxX={limits.max.x}
+            minY={limits.min.y}
+            maxY={limits.max.y}
+          />
           {picked && <Picked width={2 * dominoSide} height={dominoSide} />}
           {dominos}
         </Container>
