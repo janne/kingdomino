@@ -1,6 +1,7 @@
 import R from 'ramda'
 import { getSurroundings, getLand } from './utils'
 import { CASTLE_BIOME } from './constants'
+import getLimits from './getLimits'
 
 const getLeftPos = ({ x, y }) => ({ x, y })
 const getRightPos = ({ x, y, dir }) => {
@@ -23,21 +24,6 @@ const getSurroundingLands = (aroundPos, board) =>
 
 const min = (a, b) => (a < b ? a : b)
 const max = (a, b) => (a > b ? a : b)
-
-const getMinMax = placements =>
-  placements.reduce(
-    (acc, placement) => ({
-      min: {
-        x: min(acc.min.x, placement.x),
-        y: min(acc.min.y, placement.y)
-      },
-      max: {
-        x: max(acc.max.x, placement.x),
-        y: max(acc.max.y, placement.y)
-      }
-    }),
-    { min: { x: 0, y: 0 }, max: { x: 0, y: 0 } }
-  )
 
 const getBoard = (
   placements = [],
@@ -77,9 +63,9 @@ const getBoard = (
   }, initialBoard)
   if (board === null) return null
 
-  const minMax = getMinMax(board)
-  if (minMax.max.x - minMax.min.x > 4) return null
-  if (minMax.max.y - minMax.min.y > 4) return null
+  const limits = getLimits(board)
+  if (limits.max.x - limits.min.x > 4) return null
+  if (limits.max.y - limits.min.y > 4) return null
 
   return board
 }

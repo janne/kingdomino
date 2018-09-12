@@ -1,5 +1,6 @@
 import R from 'ramda'
 import stack from '../stack'
+import getLimits from '../getLimits'
 
 let seed = new Date().getTime()
 
@@ -27,5 +28,9 @@ const initialState = () => {
 export default ({ client }) => (req, res) => {
   const state = initialState()
   client.setState(state)
-  res.json(R.pick(['placements', 'picked'], state))
+  res.json({
+    placements: state.placements,
+    picked: state.picked,
+    limits: getLimits([])
+  })
 }
