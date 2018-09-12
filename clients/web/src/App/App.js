@@ -70,7 +70,7 @@ class App extends Component {
         height={height}
       >
         <Container x={width / 2 - boardSide / 2} y={height / 2 - boardSide / 2}>
-          <Board width={boardSide} height={boardSide} />
+          <Board maxWidth={boardSide} maxHeight={boardSide} />
           {picked && <Picked width={2 * dominoSide} height={dominoSide} />}
           {dominos}
         </Container>
