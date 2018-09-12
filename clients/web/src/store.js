@@ -38,9 +38,16 @@ export const reducers = (state = initialState, action) => {
       return { ...state, pos }
     case UPDATE_BOARD:
       const { placements, picked, points, limits } = action
-      return { ...state, picked, placements, points, limits }
+      return {
+        ...state,
+        picked,
+        placements,
+        points,
+        limits,
+        dir: 0
+      }
     case RESET_PICKED:
-      return { ...state, dir: 0, pos: state.previousPos }
+      return { ...state, pos: state.previousPos }
     default:
       return state
   }
@@ -74,9 +81,10 @@ export const place = placement => dispatch => {
     headers: { 'Content-Type': 'application/json; charset=utf-8' }
   })
     .then(resp => resp.json())
-    .then(({ ok, placements, picked, points, limits }) => {
-      if (ok) dispatch(updateBoard({ placements, picked, points, limits }))
+    .then(({ ok, ...rest }) => {
       dispatch(resetPicked())
+      if (!ok) return
+      dispatch(updateBoard(rest))
     })
 }
 
