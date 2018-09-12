@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Stage, Container, Text } from 'react-pixi-fiber'
-import Board from '../Board'
-import Picked from '../Picked'
-import Domino from '../Domino'
+import Board from './Board'
+import Picked from './Picked'
+import Domino from './Domino'
 
 class App extends Component {
   static propTypes = {

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Picked from './Picked'
-import { rotate, startDragging, endDragging, moveTo, place } from '../store'
+import { rotate, startDragging, endDragging, moveTo, place } from '../../store'
 
 const mapStateToProps = state => {
   const { dir, dragging, pos, previousPos, picked, placements } = state
